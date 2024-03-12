@@ -1,0 +1,66 @@
+.game-background{
+  background-image: url('../images/gameBackground.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-origin: padding-box;
+  height: 100vh;
+  width: 100%;
+}
+.button-container{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 20vh;
+
+  }
+.button-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.black-button,
+.green-button {
+  border-radius: 70%;
+  width: 60px;
+  padding: 19px;
+  border: 3px black;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: cursive;
+  color: white;
+  text-align:center;
+  margin-right: 10px;
+}
+
+.black-button{
+    background-color: black;
+  }
+.green-button{
+    background-color: green;
+  }
+  .board-container {
+    display: flex;
+    justify-content: center; /* Zentrieren des Boards horizontal */
+    align-items: center; /* Zentrieren des Boards vertikal */
+  }
+  .board {
+    margin-top: 70px;
+    display: grid;
+    justify-content: center;
+    border: 9px solid black;
+    border-radius: 4%;
+   }
+
+  .cell {
+    background-color: #026635;
+    color: #2196F3;
+    padding: 5px;
+    border: 2px solid #545454;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    position: relative;
+    top: 0;
+  }
