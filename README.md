@@ -1,6 +1,7 @@
 # BeeBots Adventure
 
 ## Introduction
+What is the best way for children to learn computional thinking? Of course with games! I am introducing my personal project **BeeBots Adventure**. The project is a react.js based web-game and is written in JavaScript. Primary school children are able to get familiar with algorithm in the computer science world. The goal of this game is to lead the BeeBot out of the maze with simple chronological steps. 
 
 ## Game play
 
