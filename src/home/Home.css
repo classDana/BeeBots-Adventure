@@ -14,11 +14,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 585px;
+    height: 685px;
   }
   
   .button-container {
-    margin: 10px; /* Abstand zwischen den Buttons */
+    margin: 30px; /* Abstand zwischen den Buttons */
   }
   
   .custom-button {
@@ -40,4 +40,10 @@
   }
   .inner{
     padding:12px;
+  }
+
+  @media only screen and (min-width: 768px) {
+    /* For desktop: */
+    .home-page {width: 100%;}
+    .container {width: 80%;}
   }

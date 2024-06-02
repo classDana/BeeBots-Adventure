@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
 
+
 export default function Cell(props){
 
-    return(
-    <button className="cell">
+    let image = props.image;
 
-    </button>
+    if (!image) {
+        return (
+            <div className="cell"></div>
+          );
+    }
+
+    let orientation = props.orientation || 'e';
+
+    return(
+    <div className="cell">
+        <div >
+            <img src={image}
+            alt='beebot'
+            height={90}
+            width={100}
+            style={{ transform: `rotate(${orientation === 'n' ? 0 : orientation === 'e' ? 90 : orientation === 's' ? 180 : 270}deg)` }}
+            ></img>
+        </div>
+    </div>
     );
 }
