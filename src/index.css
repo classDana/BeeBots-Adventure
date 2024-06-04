@@ -15,6 +15,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+h1{
+  font-family: "Chewy";
+  text-align: center;
+  color: #fff;
+  font-size:75px;
+  font-weight:bold;
+  text-shadow: 1px 1px 2px #545454;
+  margin: -5px;
+}
+p{
+  text-align: center;
+  font-family: "Chewy";
+  font-size:25px;
+  font-weight:bold;
+}
 
 @font-face {
   font-family: "Chewy";

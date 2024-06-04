@@ -15,12 +15,7 @@
     justify-content: center;
     align-items: center;
     height: 685px;
-  }
-  
-  .button-container {
-    margin: 30px; /* Abstand zwischen den Buttons */
-  }
-  
+  } 
   .custom-button {
     background-color: #f6a900;
     border: 3px solid black;
@@ -41,9 +36,10 @@
   .inner{
     padding:12px;
   }
-
-  @media only screen and (min-width: 768px) {
-    /* For desktop: */
-    .home-page {width: 100%;}
-    .container {width: 80%;}
+  
+  .button-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: -5px;
   }

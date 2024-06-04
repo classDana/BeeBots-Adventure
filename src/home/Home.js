@@ -2,27 +2,30 @@ import './Home.css'
 import Instruction from "./components/Instruction";
 import directionButtons from "../images/directionButtons.png";
 import goButton from "../images/goButton.png";
+import { Container, Row, Col} from 'react-bootstrap';
 import { useState } from "react";
 
 function Home() {
     const [btnInstruction, setBtnInstruction] = useState(false);
     return (
         <div className="home-page">
-            <main>
-                <div className="container">
-                    <a href="/game" className="button-container">
-                    <button className="custom-button">Starten</button>
-                    </a>
-                    {/* Introduction Button */}
-                    <div className="button-container">
-                    <button className="custom-button" onClick={() => setBtnInstruction(true)}>
-                        Anleitung</button>
-                    </div>
-                </div>
-            </main>
+            <Container>
+                <Row className="justify-content-md-center">
+                    <Col>
+                        {/* Start button for the game */}
+                        <a href="/game">
+                            <button className="custom-button">Starten</button>
+                        </a>
+                    </Col>
+                    <Col>
+                        {/* Introduction button */}
+                        <button className="custom-button" onClick={() => setBtnInstruction(true)}>Anleitung</button>
+                    </Col>
+                </Row>
+            </Container>
                 
             <Instruction trigger={btnInstruction} setTrigger = {setBtnInstruction}>
-                <h3>Anleitung</h3>
+                <h1>Anleitung</h1>
                 <div className="button-image">
                     <img src={directionButtons} alt="direction" height={140} width={190} ></img>
                 </div>

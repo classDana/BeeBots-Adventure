@@ -1,37 +1,103 @@
 import React, { useState } from 'react';
+import { Row, Col} from 'react-bootstrap';
 import Cell from './Cell';
 import beebot from "./BeeBot.png";
+import singleBush from "../../images/maze-objects/single_bush.png";
+import picnicBasket from "../../images/maze-objects/picnic_basket.png";
+import pluralBushes from "../../images/maze-objects/plural_bushes.png";
+import tree from "../../images/maze-objects/tree.png";
+import bicycle from "../../images/maze-objects/bicycle.png";
 export default function Board(props){
 
-    const rows = 5;
-    const columns = 6;
+    const rows = 6;
+    const columns = 5;
 
     const mazeMap = [];
-    for (let j = 0; j < columns; j++) {
-        let col = [];
-        for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < columns; i++) {
+        let row = [];
+        for (let j = 0; j < rows; j++) {
+            // check if the beebot is in the current position and displays in the current cell
             if (props.beebot && props.beebot.x === i && props.beebot.y === j) {
-                col.push(
+                row.push(
+                    <Col lg={2} md={2} sm={2} className="cell-col">
                     <Cell
-                        key={`${j}-${i}`}
+                        key={`${i}-${j}`}
                         image={beebot}
                         row={i}
                         col={j}
                         orientation={props.beebot.o}
-                    />
+                    /></Col>
                     ); 
             } else {
-                col.push(
-                    <Cell
-                        key={`${j}-${i}`}
-                        image={null}
-                        row={i}
-                        col={j}
-                    />
-                ); 
+                if (props.getCurrState(i,j) === 1) {
+                    row.push(
+                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Cell
+                            key={`${i}-${j}`}
+                            image={singleBush}
+                            row={i}
+                            col={j}
+                            orientation={'n'}
+                        /></Col>
+                    ); 
+                } else if (props.getCurrState(i,j) === 3) {
+                    row.push(
+                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Cell
+                            key={`${i}-${j}`}
+                            image={picnicBasket}
+                            row={i}
+                            col={j}
+                            orientation={'n'}
+                        /></Col>
+                    ); 
+                }else if (props.getCurrState(i,j) === 4) {
+                    row.push(
+                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Cell
+                            key={`${i}-${j}`}
+                            image={pluralBushes}
+                            row={i}
+                            col={j}
+                            orientation={'n'}
+                        /></Col>
+                    ); 
+                } else if (props.getCurrState(i,j) === 5) {
+                    row.push(
+                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Cell
+                            key={`${i}-${j}`}
+                            image={bicycle}
+                            row={i}
+                            col={j}
+                            orientation={'n'}
+                        /></Col>
+                    ); 
+                }else if (props.getCurrState(i,j) === 6) {
+                    row.push(
+                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Cell
+                            key={`${i}-${j}`}
+                            image={tree}
+                            row={i}
+                            col={j}
+                            orientation={'n'}
+                        /></Col>
+                    ); 
+                }else {
+                    row.push(
+                        <Col lg={2} md={2} sm={2} className="cell-col">
+                            <Cell
+                                key={`${i}-${j}`}
+                                image={null}
+                                row={i}
+                                col={j}
+                        /></Col>
+                    );    
+                }
             }
         }
-        mazeMap.push(<div key={j}>{col}</div>);
+        mazeMap.push(<Row xs={12}>{row}</Row>);
     }
 
     
