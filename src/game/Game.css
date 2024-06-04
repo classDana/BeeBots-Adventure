@@ -12,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    height: 15vh;
+    height: 1vh;
 
   }
 .button-wrapper{
@@ -40,18 +40,11 @@
 .green-button{
     background-color: green;
   }
-  .board-container {
-    display: flex;
-    justify-content: center; /* Zentrieren des Boards horizontal */
-    align-items: center; /* Zentrieren des Boards vertikal */
-  }
   .board {
-    margin-top: 30px;
-    display: flex;
+    display:grid;
     flex-wrap: wrap;
     justify-content: center;
     border: 9px solid black;
-    border-radius: 4%;
    }
 
   .cell {
@@ -113,7 +106,4 @@
   justify-content: center;
   align-items: center;
   margin-bottom: -35px;
-}
-.cell-col {
-  flex-grow: 1;
 }

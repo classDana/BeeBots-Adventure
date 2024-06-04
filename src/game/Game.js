@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Board from "./components/Board";
 import Message from "./components/Message";
 import BeeBotFigure from "../images/BeeBot_figure.png";
-import { Row, Col} from 'react-bootstrap';
+import { Row, Col, Container} from 'react-bootstrap';
 import left from "../images/buttons/leftButton.png";
 import forward from "../images/buttons/forwardButton.png";
 import right from "../images/buttons/rightButton.png";
@@ -213,9 +213,10 @@ function Game() {
                         </div>
                     </Col>
                     <Col lg={9} md={9} sm={9}>
-                        
-                        <Board map={map[0]} beebot={beebot} getCurrState={getCurrState}></Board>
-                    
+                        <Container>
+                            <Board map={map[0]} beebot={beebot} getCurrState={getCurrState}></Board>
+                        </Container>
+                
                         <div className='button-container'>
                             <div className='button-wrapper'>
                                 <button className='black-button'onClick={handleLeftButtons}>{'<-'}</button>

@@ -9,17 +9,17 @@ import tree from "../../images/maze-objects/tree.png";
 import bicycle from "../../images/maze-objects/bicycle.png";
 export default function Board(props){
 
-    const rows = 6;
-    const columns = 5;
+    const rows = 5;
+    const columns = 6;
 
     const mazeMap = [];
-    for (let i = 0; i < columns; i++) {
+    for (let i = 0; i < rows; i++) {
         let row = [];
-        for (let j = 0; j < rows; j++) {
+        for (let j = 0; j < columns; j++) {
             // check if the beebot is in the current position and displays in the current cell
             if (props.beebot && props.beebot.x === i && props.beebot.y === j) {
                 row.push(
-                    <Col lg={2} md={2} sm={2} className="cell-col">
+                    <Col lg={2} md={2} sm={2} className="p-0">
                     <Cell
                         key={`${i}-${j}`}
                         image={beebot}
@@ -31,7 +31,7 @@ export default function Board(props){
             } else {
                 if (props.getCurrState(i,j) === 1) {
                     row.push(
-                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Col lg={2} md={2} sm={2} className="p-0">
                         <Cell
                             key={`${i}-${j}`}
                             image={singleBush}
@@ -42,7 +42,7 @@ export default function Board(props){
                     ); 
                 } else if (props.getCurrState(i,j) === 3) {
                     row.push(
-                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Col lg={2} md={2} sm={2} className="p-0">
                         <Cell
                             key={`${i}-${j}`}
                             image={picnicBasket}
@@ -53,7 +53,7 @@ export default function Board(props){
                     ); 
                 }else if (props.getCurrState(i,j) === 4) {
                     row.push(
-                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Col lg={2} md={2} sm={2} className="p-0">
                         <Cell
                             key={`${i}-${j}`}
                             image={pluralBushes}
@@ -64,7 +64,7 @@ export default function Board(props){
                     ); 
                 } else if (props.getCurrState(i,j) === 5) {
                     row.push(
-                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Col lg={2} md={2} sm={2} className="p-0">
                         <Cell
                             key={`${i}-${j}`}
                             image={bicycle}
@@ -75,7 +75,7 @@ export default function Board(props){
                     ); 
                 }else if (props.getCurrState(i,j) === 6) {
                     row.push(
-                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Col lg={2} md={2} sm={2} className="p-0">
                         <Cell
                             key={`${i}-${j}`}
                             image={tree}
@@ -86,7 +86,7 @@ export default function Board(props){
                     ); 
                 }else {
                     row.push(
-                        <Col lg={2} md={2} sm={2} className="cell-col">
+                        <Col lg={2} md={2} sm={2} className="p-0">
                             <Cell
                                 key={`${i}-${j}`}
                                 image={null}
@@ -97,16 +97,14 @@ export default function Board(props){
                 }
             }
         }
-        mazeMap.push(<Row xs={12}>{row}</Row>);
+        mazeMap.push(<Row >{row}</Row>);
     }
 
     
 
     return (
-        <div className='board-container'>
         <div className="board">
             {mazeMap}
-        </div>
         </div>
     );
 }
