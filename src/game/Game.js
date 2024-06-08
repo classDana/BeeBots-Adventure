@@ -206,12 +206,21 @@ function Game() {
         <div className="game-background">
             <main>
                 <Row>
-                    
+                    {/* BeeBot which helps you during the game */}
                     <Col lg={3} md={3} sm={3}>
                         <div className='beebot'>
-                            <img src={BeeBotFigure} alt="beebot" height={80} width={110}></img>
+                            <img src={BeeBotFigure} alt="beebot" height={120} width={150}></img>
+                        </div>
+                        <div className='message-assistant'>
+                            <p className='message-assistant-content'>
+                                Hallo. Ich bin dein persönlicher BeeBot.
+                                Ich sorge dafür dass du sicher zum Ziel gelangst.
+                                <br></br>
+                                <button>Weiter</button>
+                            </p>
                         </div>
                     </Col>
+                    {/* Board game with the associated buttons */}
                     <Col lg={9} md={9} sm={9}>
                         <Container>
                             <Board map={map[0]} beebot={beebot} getCurrState={getCurrState}></Board>
@@ -230,6 +239,7 @@ function Game() {
                 </Row>
             
             </main>
+            {/* Triggers message which says the current state of the game */}
             <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver}>
                 <h3>Probiere es nocheinmal</h3>
             </Message>

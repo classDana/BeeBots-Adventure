@@ -29,81 +29,60 @@ export default function Board(props){
                     /></Col>
                     ); 
             } else {
-                if (props.getCurrState(i,j) === 1) {
-                    row.push(
-                        <Col lg={2} md={2} sm={2} className="p-0">
-                        <Cell
-                            key={`${i}-${j}`}
-                            image={singleBush}
-                            row={i}
-                            col={j}
-                            orientation={'n'}
-                        /></Col>
-                    ); 
-                } else if (props.getCurrState(i,j) === 3) {
-                    row.push(
-                        <Col lg={2} md={2} sm={2} className="p-0">
-                        <Cell
-                            key={`${i}-${j}`}
-                            image={picnicBasket}
-                            row={i}
-                            col={j}
-                            orientation={'n'}
-                        /></Col>
-                    ); 
-                }else if (props.getCurrState(i,j) === 4) {
-                    row.push(
-                        <Col lg={2} md={2} sm={2} className="p-0">
-                        <Cell
-                            key={`${i}-${j}`}
-                            image={pluralBushes}
-                            row={i}
-                            col={j}
-                            orientation={'n'}
-                        /></Col>
-                    ); 
-                } else if (props.getCurrState(i,j) === 5) {
-                    row.push(
-                        <Col lg={2} md={2} sm={2} className="p-0">
-                        <Cell
-                            key={`${i}-${j}`}
-                            image={bicycle}
-                            row={i}
-                            col={j}
-                            orientation={'n'}
-                        /></Col>
-                    ); 
-                }else if (props.getCurrState(i,j) === 6) {
-                    row.push(
-                        <Col lg={2} md={2} sm={2} className="p-0">
-                        <Cell
-                            key={`${i}-${j}`}
-                            image={tree}
-                            row={i}
-                            col={j}
-                            orientation={'n'}
-                        /></Col>
-                    ); 
-                }else {
-                    row.push(
-                        <Col lg={2} md={2} sm={2} className="p-0">
-                            <Cell
-                                key={`${i}-${j}`}
-                                image={null}
-                                row={i}
-                                col={j}
-                        /></Col>
-                    );    
+                switch (props.getCurrState(i,j)) {
+                    case 1:
+                        row.push(createCell(i,j,singleBush,'n'));
+                        break;
+                        
+                    case 3:
+                        row.push(createCell(i,j,picnicBasket,'n'));
+                        break;
+                    
+                    case 4:
+                        row.push(createCell(i,j,pluralBushes,'n'));
+                        break;
+
+                    case 5:
+                        row.push(createCell(i,j,bicycle,'n'));
+                        break;
+                    case 6:
+                        row.push(createCell(i,j,tree,'n'));
+                        break;
+                
+                    default:
+                        row.push(createCell(i,j,null,'n'));
+                        break;
                 }
             }
         }
         mazeMap.push(<Row >{row}</Row>);
     }
 
+    /**
+     * 
+     * @param {*} i 
+     * @param {*} j 
+     * @param {*} image 
+     * @returns 
+     */
+    function createCell(i,j,image,o) {
+        return(
+            <Col lg={2} md={2} sm={2} className="p-0">
+                <Cell
+                    key={`${i}-${j}`}
+                    image={image}
+                    row={i}
+                    col={j}
+                    orientation={o}
+                />
+            </Col>
+        );
+    }
+
     
 
     return (
-        <div className="board">
+        <div className='board'>
             {mazeMap}
         </div>
     );
