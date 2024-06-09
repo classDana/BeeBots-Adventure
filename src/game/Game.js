@@ -18,10 +18,13 @@ import './Game.css'
 function Game() {
 
     const stepsArr = new Array();
+    const beebotInteraction = ['Hallo. Ich bin dein persönlicher BeeBot. Ich sorge dafür dass du sicher zum Ziel gelangst.', 'Hi'];
+    const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState('e');
     const [beebot, setBeebot] = useState({ x: 4, y: 0, o: 'e' });
     const [gameOver, setGameOver] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
+
 
     const gameState = {
         Play: "play",
@@ -201,6 +204,10 @@ function Game() {
         
     }
 
+    function increaseIndex() {
+        setIndex(index+1);
+    }
+
  
     return (
         <div className="game-background">
@@ -213,10 +220,9 @@ function Game() {
                         </div>
                         <div className='message-assistant'>
                             <p className='message-assistant-content'>
-                                Hallo. Ich bin dein persönlicher BeeBot.
-                                Ich sorge dafür dass du sicher zum Ziel gelangst.
+                                {beebotInteraction[index]}
                                 <br></br>
-                                <button>Weiter</button>
+                                <button onClick={increaseIndex}>Weiter</button>
                             </p>
                         </div>
                     </Col>
