@@ -31,21 +31,21 @@ export default function Board(props){
             } else {
                 switch (props.getCurrState(i,j)) {
                     case 1:
-                        row.push(createCell(i,j,singleBush,'n'));
-                        break;
-                        
-                    case 3:
                         row.push(createCell(i,j,picnicBasket,'n'));
                         break;
+
+                    case 2:
+                        row.push(createCell(i,j,singleBush,'n'));
+                        break;
                     
-                    case 4:
+                    case 3:
                         row.push(createCell(i,j,pluralBushes,'n'));
                         break;
 
-                    case 5:
+                    case 4:
                         row.push(createCell(i,j,bicycle,'n'));
                         break;
-                    case 6:
+                    case 5:
                         row.push(createCell(i,j,tree,'n'));
                         break;
                 

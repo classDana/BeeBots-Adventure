@@ -6,6 +6,7 @@ import { Row, Col, Container} from 'react-bootstrap';
 import left from "../images/buttons/leftButton.png";
 import forward from "../images/buttons/forwardButton.png";
 import right from "../images/buttons/rightButton.png";
+import jsonData from "./game_assets/beebot_phrases.json";
 import './Game.css'
 
 /*
@@ -18,34 +19,28 @@ import './Game.css'
 function Game() {
 
     const stepsArr = new Array();
-    const beebotInteraction = ['Hallo. Ich bin dein persönlicher BeeBot. Ich sorge dafür dass du sicher zum Ziel gelangst.', 'Hi'];
+    const beebotInteraction = jsonData.phrases;
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState('e');
     const [beebot, setBeebot] = useState({ x: 4, y: 0, o: 'e' });
     const [gameOver, setGameOver] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
 
-
-    const gameState = {
-        Play: "play",
-        Failed: "failed",
-        GameOver: "game over"
-    }
- 
-
     /*
     The game contains 3 levels from easy to hard.
     The list of maps contains two variables:
         1: This field leads to a dead end.
         2: This field leads to the goal.
+        3: This field is the goal.
     */
 
-    const [map, setMap] = useState([
-        [6, 1, 1, 2, 2, 3],
-        [1, 5, 1, 2, 1, 1],
-        [4, 1, 2, 2, 1, 6],
-        [1, 6, 2, 4, 1, 4],
-        [2, 2, 2, 1, 4, 5],
+    const [map, setMap] = useState(
+    [
+        [5, 2, 2, 0, 0, 1],
+        [2, 4, 2, 0, 2, 2],
+        [3, 2, 0, 0, 2, 5],
+        [2, 5, 0, 3, 2, 3],
+        [0, 0, 0, 2, 3, 4],
     ],
     [
         [1, 1, 1, 2, 2, 2],
@@ -183,11 +178,11 @@ function Game() {
         console.log('Getting current state for ', x,y);
         const currMap = 
         [
-            [6, 1, 1, 2, 2, 3],
-            [1, 5, 1, 2, 1, 1],
-            [4, 1, 2, 2, 1, 6],
-            [1, 6, 2, 4, 1, 4],
-            [2, 2, 2, 1, 4, 5],
+            [5, 2, 2, 0, 0, 1],
+            [2, 4, 2, 0, 2, 2],
+            [3, 2, 0, 0, 2, 5],
+            [2, 5, 0, 3, 2, 3],
+            [0, 0, 0, 2, 3, 4],
         ];        
 
         for (let i = 0; i < currMap.length; i++) {
@@ -215,16 +210,20 @@ function Game() {
                 <Row>
                     {/* BeeBot which helps you during the game */}
                     <Col lg={3} md={3} sm={3}>
-                        <div className='beebot'>
-                            <img src={BeeBotFigure} alt="beebot" height={120} width={150}></img>
-                        </div>
-                        <div className='message-assistant'>
-                            <p className='message-assistant-content'>
-                                {beebotInteraction[index]}
-                                <br></br>
-                                <button onClick={increaseIndex}>Weiter</button>
-                            </p>
-                        </div>
+                        <Row>
+                            <div className='message-assistant'>
+                                    <p className='message-assistant-content'>
+                                        {beebotInteraction[index]}
+                                        <br></br>
+                                        <button className='button-next' onClick={increaseIndex}>Weiter</button>
+                                    </p>
+                                </div>
+                        </Row>
+                        <Row>
+                            <div className='beebot'>
+                                <img src={BeeBotFigure} alt="beebot" height={120} width={150}></img>
+                            </div>
+                        </Row>
                     </Col>
                     {/* Board game with the associated buttons */}
                     <Col lg={9} md={9} sm={9}>

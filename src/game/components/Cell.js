@@ -18,9 +18,11 @@ export default function Cell(props){
         <div >
             <img src={image}
             alt='beebot'
-            height={90}
+            height={100}
             width={100}
-            style={{ transform: `rotate(${orientation === 'n' ? 0 : orientation === 'e' ? 90 : orientation === 's' ? 180 : 270}deg)` }}
+            style={{
+                transform: `rotate(${orientation === 'n' ? 0 : orientation === 'e' ? 90 : orientation === 's' ? 180 : 270}deg)`
+            }}
             ></img>
         </div>
     </div>
