@@ -3,6 +3,7 @@ import Board from "./components/Board";
 import Message from "./components/Message";
 import BeeBotFigure from "../images/BeeBot_figure.png";
 import { Row, Col, Container} from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import left from "../images/buttons/leftButton.png";
 import forward from "../images/buttons/forwardButton.png";
 import right from "../images/buttons/rightButton.png";
@@ -26,7 +27,7 @@ function Game() {
     const [gameOver, setGameOver] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
 
-    /*
+     /*
     The game contains 3 levels from easy to hard.
     The list of maps contains two variables:
         1: This field leads to a dead end.
@@ -34,26 +35,37 @@ function Game() {
         3: This field is the goal.
     */
 
-    const [map, setMap] = useState(
-    [
-        [5, 2, 2, 0, 0, 1],
-        [2, 4, 2, 0, 2, 2],
-        [3, 2, 0, 0, 2, 5],
-        [2, 5, 0, 3, 2, 3],
-        [0, 0, 0, 2, 3, 4],
-    ],
-    [
-        [1, 1, 1, 2, 2, 2],
-        [1, 1, 1, 2, 1, 1],
-        [1, 1, 2, 2, 1, 1],
-        [2, 2, 2, 1, 1, 1],
-    ],
-    [
-        [1, 1, 1, 2, 2, 2],
-        [1, 1, 1, 2, 1, 1],
-        [1, 1, 2, 2, 1, 1],
-        [2, 2, 2, 1, 1, 1],
-    ]);
+        const maps = [
+
+            { id: 1, name: 'Level 1', data: [
+              [5, 2, 2, 0, 0, 1],
+              [2, 4, 2, 0, 2, 2],
+              [3, 2, 0, 0, 2, 5],
+              [2, 5, 0, 3, 2, 3],
+              [0, 0, 0, 2, 3, 4],
+            ]},
+            { id: 2, name: 'Level 2', data: [
+                [5, 2, 2, 0, 0, 1],
+                [2, 4, 2, 0, 2, 2],
+                [3, 2, 0, 0, 2, 5],
+                [2, 5, 0, 3, 2, 3],
+                [0, 0, 0, 2, 3, 4],
+            ]},
+            { id: 3, name: 'Level 3', data: [
+                [5, 2, 2, 0, 1, 5],
+                [2, 4, 2, 0, 2, 2],
+                [3, 2, 0, 0, 2, 5],
+                [2, 5, 0, 3, 2, 3],
+                [0, 0, 0, 2, 3, 4],
+            ]},
+          ];
+
+    const { levelId } = useParams();
+    const getMapById = (levelId) => {
+        return maps.find((map) => map.id === parseInt(levelId));
+    };
+    const map = getMapById(levelId);
+
 
     /*
     Each map has its own start coordinates.
@@ -97,7 +109,6 @@ function Game() {
     async function handleGoButton() {
 
         const timer = ms => new Promise(res => setTimeout(res, ms))
-        console.log(stepsArr);
         let coords = { ...beebot }
         for (let i = 0; i < stepsArr.length; i++){
 
@@ -157,7 +168,6 @@ function Game() {
 
         let currState = getCurrState(x,y);
         setDirection(o);
-        console.log(x,y,o);
 
         if(currState === 2){
             setBeebot({ x: x, y: y, o: o });
@@ -174,29 +184,15 @@ function Game() {
 
 
     function getCurrState(x,y) {
-
-        console.log('Getting current state for ', x,y);
-        const currMap = 
-        [
-            [5, 2, 2, 0, 0, 1],
-            [2, 4, 2, 0, 2, 2],
-            [3, 2, 0, 0, 2, 5],
-            [2, 5, 0, 3, 2, 3],
-            [0, 0, 0, 2, 3, 4],
-        ];        
+        const currMap = map.data;      
 
         for (let i = 0; i < currMap.length; i++) {
-            console.log(currMap[i]);
             for (let j = 0; j < currMap[i].length; j++) {
-                console.log(i === x);
                 if (i === x && j === y) {
                     return currMap[i][j];
                 }
-                
-            }
-            
-        }
-        
+            }   
+        } 
     }
 
     function increaseIndex() {
@@ -211,13 +207,15 @@ function Game() {
                     {/* BeeBot which helps you during the game */}
                     <Col lg={3} md={3} sm={3}>
                         <Row>
-                            <div className='message-assistant'>
-                                    <p className='message-assistant-content'>
-                                        {beebotInteraction[index]}
-                                        <br></br>
-                                        <button className='button-next' onClick={increaseIndex}>Weiter</button>
-                                    </p>
-                                </div>
+                        
+                        <div className='message-assistant'>
+                            <p className='message-assistant-content'>
+                                {beebotInteraction[index]}
+                                <br></br>
+                                <button className='button-next' onClick={increaseIndex}>Weiter</button>
+                            </p>
+                        </div>
+                            
                         </Row>
                         <Row>
                             <div className='beebot'>
@@ -228,7 +226,7 @@ function Game() {
                     {/* Board game with the associated buttons */}
                     <Col lg={9} md={9} sm={9}>
                         <Container>
-                            <Board map={map[0]} beebot={beebot} getCurrState={getCurrState}></Board>
+                            <Board map={map.data} beebot={beebot} getCurrState={getCurrState}></Board>
                         </Container>
                 
                         <div className='button-container'>
