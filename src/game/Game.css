@@ -33,6 +33,12 @@
   text-align:center;
   margin-right: 10px;
 }
+.black-button:hover{
+  background-color: #75726c;
+}
+.green-button:hover{
+  background-color: #9fef44;
+}
 
 .black-button{
     background-color: black;
@@ -90,7 +96,7 @@
 }
 .message-assistant{
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   display:contents;
   text-align: center;
@@ -98,8 +104,8 @@
 }
 
 .message-assistant-content{
-  width: 150%;
-  top: 15%;
+  width: 200px;
+  top: 150px;
   left: 11%;
   padding: 1rem;
   -webkit-border-radius: 20px;

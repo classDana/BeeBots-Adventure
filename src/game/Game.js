@@ -29,10 +29,10 @@ function Game() {
 
      /*
     The game contains 3 levels from easy to hard.
-    The list of maps contains two variables:
-        1: This field leads to a dead end.
-        2: This field leads to the goal.
-        3: This field is the goal.
+    The data of each map contains six variables:
+        0: This field is the goal.
+        1: This field leads to the goal.
+        2-5: These fields lead to a dead end.
     */
 
         const maps = [
@@ -52,19 +52,21 @@ function Game() {
                 [0, 0, 0, 2, 3, 4],
             ]},
             { id: 3, name: 'Level 3', data: [
-                [5, 2, 2, 0, 1, 5],
-                [2, 4, 2, 0, 2, 2],
-                [3, 2, 0, 0, 2, 5],
-                [2, 5, 0, 3, 2, 3],
-                [0, 0, 0, 2, 3, 4],
+                [1, 0, 0, 3, 3, 5],
+                [2, 4, 0, 0, 0, 0],
+                [3, 2, 3, 3, 2, 0],
+                [2, 0, 0, 0, 2, 0],
+                [0, 0, 3, 0, 0, 0],
             ]},
           ];
+
 
     const { levelId } = useParams();
     const getMapById = (levelId) => {
         return maps.find((map) => map.id === parseInt(levelId));
     };
     const map = getMapById(levelId);
+    
 
 
     /*
@@ -164,15 +166,26 @@ function Game() {
     }
 
 
+
+    /**
+     * 
+     * @param {*} x x-coordinate
+     * @param {*} y y-ccordinate
+     * @param {*} o orientation
+     * 
+     * Function returns the updated map after each change 
+     * from the .. TODO
+     */
+
     function updateBoard(x, y, o) {
 
         let currState = getCurrState(x,y);
         setDirection(o);
 
-        if(currState === 2){
+        if(currState === 0){
             setBeebot({ x: x, y: y, o: o });
         
-        }else if(currState === 3){
+        }else if(currState === 1){
             setBeebot({ x: x, y: y, o: o });
             setFinishedGame(true);
         
@@ -185,7 +198,6 @@ function Game() {
 
     function getCurrState(x,y) {
         const currMap = map.data;      
-
         for (let i = 0; i < currMap.length; i++) {
             for (let j = 0; j < currMap[i].length; j++) {
                 if (i === x && j === y) {
@@ -199,6 +211,10 @@ function Game() {
         setIndex(index+1);
     }
 
+    function isLevelOne() {
+        return levelId === 1;
+    }
+
  
     return (
         <div className="game-background">
@@ -207,15 +223,15 @@ function Game() {
                     {/* BeeBot which helps you during the game */}
                     <Col lg={3} md={3} sm={3}>
                         <Row>
-                        
-                        <div className='message-assistant'>
-                            <p className='message-assistant-content'>
-                                {beebotInteraction[index]}
-                                <br></br>
-                                <button className='button-next' onClick={increaseIndex}>Weiter</button>
-                            </p>
-                        </div>
-                            
+                            <div className='message-assistant'>
+                            {isLevelOne() && (
+                                <p className='message-assistant-content'>
+                                    {beebotInteraction[index]}
+                                    <br></br>
+                                    <button className='button-next' onClick={increaseIndex}>Weiter</button>
+                                </p>
+                                )}
+                            </div>
                         </Row>
                         <Row>
                             <div className='beebot'>
@@ -224,20 +240,21 @@ function Game() {
                         </Row>
                     </Col>
                     {/* Board game with the associated buttons */}
-                    <Col lg={9} md={9} sm={9}>
-                        <Container>
-                            <Board map={map.data} beebot={beebot} getCurrState={getCurrState}></Board>
-                        </Container>
-                
-                        <div className='button-container'>
-                            <div className='button-wrapper'>
-                                <button className='black-button'onClick={handleLeftButtons}>{'<-'}</button>
-                                <button className='black-button' onClick={handleForwardButtons}>f</button>
-                                <button className='black-button' onClick={handleRightButtons}>{'->'}</button>
-                                <button className='green-button' onClick={handleGoButton}>GO</button>
+                    <Col lg={8} md={9} sm={9}>
+                            <Container style={{ marginBottom: '-310px' }}>
+                                <Board map={map.data} beebot={beebot} getCurrState={getCurrState}></Board>
+                            </Container>
+                    
+                            <Container className="mt-1">
+                            <div className='button-container'>
+                                <div className='button-wrapper'>
+                                    <button className='black-button'onClick={handleLeftButtons}>{'<-'}</button>
+                                    <button className='black-button' onClick={handleForwardButtons}>f</button>
+                                    <button className='black-button' onClick={handleRightButtons}>{'->'}</button>
+                                    <button className='green-button' onClick={handleGoButton}>GO</button>
+                                </div>
                             </div>
-                        </div>
-            
+                            </Container>
                     </Col>
                 </Row>
             
