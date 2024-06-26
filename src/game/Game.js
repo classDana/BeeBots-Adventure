@@ -66,6 +66,7 @@ function Game() {
         return maps.find((map) => map.id === parseInt(levelId));
     };
     const map = getMapById(levelId);
+    const isLevelOne = checkLevel(levelId);
     
 
 
@@ -97,15 +98,16 @@ function Game() {
     ];
 
     function handleLeftButtons() {
-        stepsArr.push("l");
+        stepsArr.push("left");
     }
 
     function handleRightButtons() {
-        stepsArr.push("r");
+        stepsArr.push("right");
     }
 
     function handleForwardButtons() {
-        stepsArr.push("f");
+        console.log(isLevelOne);
+        stepsArr.push("forward");
     }
 
     async function handleGoButton() {
@@ -116,7 +118,7 @@ function Game() {
 
             let s = stepsArr[i];
 
-            if(s === "l"){
+            if(s === "left"){
                 if(coords.o === "n"){
                     updateBoard(coords.x, coords.y, "w");
                     coords = { ...coords, o: "w" };
@@ -131,7 +133,7 @@ function Game() {
                     coords = { ...coords, o: "s" };
                 } 
                 
-            }else if(s === "r"){
+            }else if(s === "right"){
                 if(coords.o === "n"){
                     updateBoard(coords.x, coords.y, "e");
                     coords = { ...coords, o: "e" };
@@ -146,7 +148,7 @@ function Game() {
                     coords = { ...coords, o: "n" };
                 } 
                 
-            }else if(s === "f"){
+            }else if(s === "forward"){
                 if(coords.o === "n"){
                     updateBoard(coords.x-1, coords.y, coords.o);  
                     coords = { ...coords, x: coords.x - 1 };  
@@ -211,8 +213,24 @@ function Game() {
         setIndex(index+1);
     }
 
-    function isLevelOne() {
-        return levelId === 1;
+    function checkLevel(levelId) {
+        return parseInt(levelId) === 1
+    }
+
+    function renderInteraction(props) {
+        const isLevelOne = props.isLevelOne;
+        if (isLevelOne) {
+            return (
+                <div className='message-assistant'>
+                    <p className='message-assistant-content'>
+                        {beebotInteraction[index]}
+                        <br></br>
+                        <button className='button-next' onClick={increaseIndex}>Weiter</button>
+                    </p>
+                </div>
+              ); 
+        }
+        return null;
     }
 
  
@@ -224,13 +242,14 @@ function Game() {
                     <Col lg={3} md={3} sm={3}>
                         <Row>
                             <div className='message-assistant'>
-                            {isLevelOne() && (
-                                <p className='message-assistant-content'>
-                                    {beebotInteraction[index]}
-                                    <br></br>
-                                    <button className='button-next' onClick={increaseIndex}>Weiter</button>
-                                </p>
-                                )}
+                            {isLevelOne ? (<p className='message-assistant-content'>
+                                                {beebotInteraction[index]}
+                                                <br></br>
+                                                <button className='button-next' onClick={increaseIndex}>Weiter</button>
+                                            </p>)
+                                            : (<p className='message-assistant-content'>
+                                                Schritte</p>)}
+                                
                             </div>
                         </Row>
                         <Row>

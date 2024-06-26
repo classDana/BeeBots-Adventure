@@ -13,7 +13,7 @@ function Home() {
                 <Row className="justify-content-md-center">
                     <Col>
                         {/* Start button for the game */}
-                        <a href="/game">
+                        <a href="/game/1">
                             <button className="custom-button">Starten</button>
                         </a>
                     </Col>
