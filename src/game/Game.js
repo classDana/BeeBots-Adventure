@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Board from "./components/Board";
 import Message from "./components/Message";
 import BeeBotFigure from "../images/BeeBot_figure.png";
-import { Row, Col, Container} from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
-import left from "../images/buttons/leftButton.png";
-import forward from "../images/buttons/forwardButton.png";
-import right from "../images/buttons/rightButton.png";
 import jsonData from "./game_assets/beebot_phrases.json";
 import './Game.css'
 
@@ -19,7 +18,7 @@ import './Game.css'
 
 function Game() {
 
-    const stepsArr = new Array();
+    const [steps, setSteps] = useState([]);
     const beebotInteraction = jsonData.phrases;
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState('e');
@@ -67,6 +66,14 @@ function Game() {
     };
     const map = getMapById(levelId);
     const isLevelOne = checkLevel(levelId);
+
+
+    const [hideSteps, setHideSteps] = useState(false); 
+
+    const handleToggle = (event) => {
+        setHideSteps(event.target.checked); // update the state variable
+      };
+
     
 
 
@@ -98,25 +105,33 @@ function Game() {
     ];
 
     function handleLeftButtons() {
-        stepsArr.push("left");
+        setSteps([
+            ...steps,
+            { name: 'left', data: '90 Grad nach links' }
+          ]);
     }
 
     function handleRightButtons() {
-        stepsArr.push("right");
+        setSteps([
+            ...steps,
+            { name: 'right', data: '90 Grad nach rechts' }
+          ]);
     }
 
     function handleForwardButtons() {
-        console.log(isLevelOne);
-        stepsArr.push("forward");
+        setSteps([
+            ...steps,
+            { name: 'forward', data: 'ein Schritt nach vorne' }
+          ]);
     }
 
     async function handleGoButton() {
 
         const timer = ms => new Promise(res => setTimeout(res, ms))
         let coords = { ...beebot }
-        for (let i = 0; i < stepsArr.length; i++){
+        for (let i = 0; i < steps.length; i++){
 
-            let s = stepsArr[i];
+            let s = steps[i].name;
 
             if(s === "left"){
                 if(coords.o === "n"){
@@ -240,6 +255,10 @@ function Game() {
                 <Row>
                     {/* BeeBot which helps you during the game */}
                     <Col lg={3} md={3} sm={3}>
+                    <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={handleToggle}></input>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Schritte verbergen</label>
+                            </div>
                         <Row>
                             <div className='message-assistant'>
                             {isLevelOne ? (<p className='message-assistant-content'>
@@ -247,8 +266,13 @@ function Game() {
                                                 <br></br>
                                                 <button className='button-next' onClick={increaseIndex}>Weiter</button>
                                             </p>)
-                                            : (<p className='message-assistant-content'>
-                                                Schritte</p>)}
+                                            : (hideSteps ? null : (
+
+                                                (<p className='message-assistant-content'>
+                                                    {steps.map(step => (
+                                                    <li>{step.data}</li>))}
+                                                </p>)
+                                              ))}
                                 
                             </div>
                         </Row>
@@ -267,9 +291,16 @@ function Game() {
                             <Container className="mt-1">
                             <div className='button-container'>
                                 <div className='button-wrapper'>
-                                    <button className='black-button'onClick={handleLeftButtons}>{'<-'}</button>
-                                    <button className='black-button' onClick={handleForwardButtons}>f</button>
-                                    <button className='black-button' onClick={handleRightButtons}>{'->'}</button>
+                                    <button className='black-button' onClick={handleLeftButtons}>
+                                        <FontAwesomeIcon icon={faArrowLeft} color="white" />
+                                    </button>
+                                    <button className='black-button' onClick={handleForwardButtons}>
+                                        <FontAwesomeIcon icon={faArrowUp} color="white" />
+                                    </button>
+                                    <button className='black-button' onClick={handleRightButtons}>
+                                        <FontAwesomeIcon icon={faArrowRight} color="white" />
+                                    </button>
+
                                     <button className='green-button' onClick={handleGoButton}>GO</button>
                                 </div>
                             </div>
