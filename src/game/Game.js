@@ -291,17 +291,17 @@ function Game() {
                             <Container className="mt-1">
                             <div className='button-container'>
                                 <div className='button-wrapper'>
-                                    <button className='black-button' onClick={handleLeftButtons}>
+                                    <button className={index === 3 ? 'black-button glow' : 'black-button'} onClick={handleLeftButtons} disabled={index < 3}>
                                         <FontAwesomeIcon icon={faArrowLeft} color="white" />
                                     </button>
-                                    <button className='black-button' onClick={handleForwardButtons}>
+                                    <button className={index === 2 ? 'black-button glow' : 'black-button'} onClick={handleForwardButtons} disabled={index < 2}>
                                         <FontAwesomeIcon icon={faArrowUp} color="white" />
                                     </button>
-                                    <button className='black-button' onClick={handleRightButtons}>
+                                    <button className={index === 3 ? 'black-button glow' : 'black-button'} onClick={handleRightButtons} disabled={index < 3}>
                                         <FontAwesomeIcon icon={faArrowRight} color="white" />
                                     </button>
 
-                                    <button className='green-button' onClick={handleGoButton}>GO</button>
+                                    <button className={index === 2 ? 'green-button glow' : 'green-button'} onClick={handleGoButton}>GO</button>
                                 </div>
                             </div>
                             </Container>
