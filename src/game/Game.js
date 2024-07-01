@@ -25,8 +25,6 @@ function Game() {
     const [beebot, setBeebot] = useState({ x: 4, y: 0, o: 'e' });
     const [gameOver, setGameOver] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
-    const [isHidden, setHiddenSteps] = useState(false);
-
 
      /*
     The game contains 3 levels from easy to hard.
@@ -61,22 +59,6 @@ function Game() {
             ]},
           ];
 
-
-    const { levelId } = useParams();
-    const getMapById = (levelId) => {
-        return maps.find((map) => map.id === parseInt(levelId));
-    };
-    const map = getMapById(levelId);
-    const isLevelOne = checkLevel(levelId);
-
-    const handleToggle = (event) => {
-        setHiddenSteps(event.target.checked);
-      };
-
-
-    const isCompleted = checkCompletedInteraction();
-
-
     /*
     Each map has its own start coordinates.
     The BeeBot is placed at the
@@ -84,25 +66,41 @@ function Game() {
     coordinates of the respective map
     */
 
-    var startCoords = [
+    const startCoords = [
         { x: 5, y: 4, o: "e"},
         { x: 2, y: 7, o: "e"},
         { x: 8, y: 3, o: "e" },
     ];
 
+
     /*
-    Each map has its own end coordinates.
-    If the BeeBot is placed at the 
-    end coordinates then the game 
-    is finished.
+    Get map by Level Id
     */
 
-    var endCoordinate = { x: 0, y: 5 };
-    var endCoords = [
-        { x: 5, y: 4 },
-        { x: 2, y: 7 },
-        { x: 8, y: 3 },
-    ];
+    const { levelId } = useParams();
+    const getMapById = (levelId) => {
+        return maps.find((map) => map.id === parseInt(levelId));
+    };
+    const map = getMapById(levelId);
+
+    /*
+    Get start Coords by Level Id
+    */
+    const getStartCoordsById = (levelId) => {
+        return startCoords[levelId-1];
+    };
+    const startCoord = getStartCoordsById(levelId);
+
+
+    // Booleans for rendering HTML elements
+    const isLevelOne = checkLevel(levelId);
+    const isCompleted = checkCompletedInteraction();
+    const [isHidden, setHiddenSteps] = useState(false);
+
+    const handleToggle = (event) => {
+        setHiddenSteps(event.target.checked);
+      };
+
 
     function handleLeftButtons() {
         setSteps([
@@ -265,6 +263,7 @@ function Game() {
 
     function renderButtons() {
         if (isLevelOne && !isCompleted) {
+            console.log(startCoord);
             return (
                 <div className='button-wrapper'>
                     <button className={index === 8 ? 'black-button glow' : 'black-button'} onClick={handleLeftButtons} disabled={index < 8}>
