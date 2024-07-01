@@ -25,6 +25,8 @@ function Game() {
     const [beebot, setBeebot] = useState({ x: 4, y: 0, o: 'e' });
     const [gameOver, setGameOver] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
+    const [isHidden, setHiddenSteps] = useState(false);
+
 
      /*
     The game contains 3 levels from easy to hard.
@@ -67,14 +69,12 @@ function Game() {
     const map = getMapById(levelId);
     const isLevelOne = checkLevel(levelId);
 
-
-    const [hideSteps, setHideSteps] = useState(false); 
-
     const handleToggle = (event) => {
-        setHideSteps(event.target.checked); // update the state variable
+        setHiddenSteps(event.target.checked);
       };
 
-    
+
+    const isCompleted = checkCompletedInteraction();
 
 
     /*
@@ -229,12 +229,15 @@ function Game() {
     }
 
     function checkLevel(levelId) {
-        return parseInt(levelId) === 1
+        return parseInt(levelId) === 1;
     }
 
-    function renderInteraction(props) {
-        const isLevelOne = props.isLevelOne;
-        if (isLevelOne) {
+    function checkCompletedInteraction() {
+        return beebotInteraction[index] === undefined;
+    }
+
+    function renderInteraction() {
+        if (!isCompleted) {
             return (
                 <div className='message-assistant'>
                     <p className='message-assistant-content'>
@@ -245,7 +248,54 @@ function Game() {
                 </div>
               ); 
         }
+        return (<div> {renderSteps()} </div>);
+    }
+
+    function renderSteps() {
+        if (!isHidden) {
+            return (
+                <p className='message-assistant-content'>
+                    {steps.map(step => (
+                    <li>{step.data}</li>))}
+                </p>
+              ); 
+        }
         return null;
+    }
+
+    function renderButtons() {
+        if (isLevelOne && !isCompleted) {
+            return (
+                <div className='button-wrapper'>
+                    <button className={index === 8 ? 'black-button glow' : 'black-button'} onClick={handleLeftButtons} disabled={index < 8}>
+                        <FontAwesomeIcon icon={faArrowLeft} color="white" />
+                    </button>
+                    <button className={index === 5 || index === 8 ? 'black-button glow' : 'black-button'} onClick={handleForwardButtons} disabled={index < 5}>
+                        <FontAwesomeIcon icon={faArrowUp} color="white" />
+                    </button>
+                    <button className='black-button' onClick={handleRightButtons} disabled={index < 8}>
+                        <FontAwesomeIcon icon={faArrowRight} color="white" />
+                    </button>
+
+                    <button className={index === 5 || index === 8 ? 'green-button glow' : 'green-button'} onClick={handleGoButton} disabled={index < 5}>GO</button>
+                </div>
+              ); 
+        }
+        return (
+            <div className='button-wrapper'>
+                <button className='black-button' onClick={handleLeftButtons}>
+                    <FontAwesomeIcon icon={faArrowLeft} color="white" />
+                </button>
+                <button className='black-button' onClick={handleForwardButtons}>
+                    <FontAwesomeIcon icon={faArrowUp} color="white" />
+                </button>
+                <button className='black-button' onClick={handleRightButtons}>
+                    <FontAwesomeIcon icon={faArrowRight} color="white" />
+                </button>
+
+                <button className='green-button' onClick={handleGoButton}>GO</button>
+            </div>
+          );
     }
 
  
@@ -261,19 +311,7 @@ function Game() {
                             </div>
                         <Row>
                             <div className='message-assistant'>
-                            {isLevelOne ? (<p className='message-assistant-content'>
-                                                {beebotInteraction[index]}
-                                                <br></br>
-                                                <button className='button-next' onClick={increaseIndex}>Weiter</button>
-                                            </p>)
-                                            : (hideSteps ? null : (
-
-                                                (<p className='message-assistant-content'>
-                                                    {steps.map(step => (
-                                                    <li>{step.data}</li>))}
-                                                </p>)
-                                              ))}
-                                
+                            {isLevelOne ? <div> { renderInteraction() } </div> : <div> { renderSteps() } </div> }
                             </div>
                         </Row>
                         <Row>
@@ -289,21 +327,7 @@ function Game() {
                             </Container>
                     
                             <Container className="mt-1">
-                            <div className='button-container'>
-                                <div className='button-wrapper'>
-                                    <button className={index === 3 ? 'black-button glow' : 'black-button'} onClick={handleLeftButtons} disabled={index < 3}>
-                                        <FontAwesomeIcon icon={faArrowLeft} color="white" />
-                                    </button>
-                                    <button className={index === 2 ? 'black-button glow' : 'black-button'} onClick={handleForwardButtons} disabled={index < 2}>
-                                        <FontAwesomeIcon icon={faArrowUp} color="white" />
-                                    </button>
-                                    <button className={index === 3 ? 'black-button glow' : 'black-button'} onClick={handleRightButtons} disabled={index < 3}>
-                                        <FontAwesomeIcon icon={faArrowRight} color="white" />
-                                    </button>
-
-                                    <button className={index === 2 ? 'green-button glow' : 'green-button'} onClick={handleGoButton}>GO</button>
-                                </div>
-                            </div>
+                            <div className='button-container'> {renderButtons()} </div>
                             </Container>
                     </Col>
                 </Row>
