@@ -5,7 +5,7 @@ import BeeBotFigure from "../images/BeeBot_figure.png";
 import { Row, Col, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import jsonData from "./game_assets/beebot_phrases.json";
 import './Game.css'
 
@@ -18,13 +18,16 @@ import './Game.css'
 
 function Game() {
 
+    const navigate = useNavigate();
     const [steps, setSteps] = useState([]);
     const beebotInteraction = jsonData.phrases;
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState('e');
-    const [beebot, setBeebot] = useState({ x: 4, y: 0, o: 'e' });
     const [gameOver, setGameOver] = useState(false);
+    const [finishedLevel, setFinishedLevel] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
+
+    const [level, setLevel] = useState(1); 
 
      /*
     The game contains 3 levels from easy to hard.
@@ -37,11 +40,11 @@ function Game() {
         const maps = [
 
             { id: 1, name: 'Level 1', data: [
-              [5, 2, 2, 0, 0, 1],
-              [2, 4, 2, 0, 2, 2],
+              [5, 2, 2, 2, 2, 2],
+              [2, 4, 2, 0, 1, 2],
               [3, 2, 0, 0, 2, 5],
               [2, 5, 0, 3, 2, 3],
-              [0, 0, 0, 2, 3, 4],
+              [2, 2, 2, 2, 3, 4],
             ]},
             { id: 2, name: 'Level 2', data: [
                 [5, 2, 2, 0, 0, 1],
@@ -54,8 +57,8 @@ function Game() {
                 [1, 0, 0, 3, 3, 5],
                 [2, 4, 0, 0, 0, 0],
                 [3, 2, 3, 3, 2, 0],
-                [2, 0, 0, 0, 2, 0],
-                [0, 0, 3, 0, 0, 0],
+                [0, 0, 0, 0, 2, 0],
+                [0, 2, 3, 0, 0, 0],
             ]},
           ];
 
@@ -67,11 +70,10 @@ function Game() {
     */
 
     const startCoords = [
-        { x: 5, y: 4, o: "e"},
-        { x: 2, y: 7, o: "e"},
-        { x: 8, y: 3, o: "e" },
+        { x: 3, y: 2, o: "n"},
+        { x: 4, y: 0, o: "e"},
+        { x: 4, y: 0, o: "n" },
     ];
-
 
     /*
     Get map by Level Id
@@ -91,6 +93,8 @@ function Game() {
     };
     const startCoord = getStartCoordsById(levelId);
 
+    const [beebot, setBeebot] = useState(startCoord);
+
 
     // Booleans for rendering HTML elements
     const isLevelOne = checkLevel(levelId);
@@ -100,6 +104,21 @@ function Game() {
     const handleToggle = (event) => {
         setHiddenSteps(event.target.checked);
       };
+
+      useEffect(() => {
+        if (isCompleted || gameOver) {
+            setSteps([]);
+            setBeebot(startCoord);
+        }
+      }, [isCompleted, gameOver]);
+
+      useEffect(() => {
+        if (finishedLevel && level !== 3) {
+            navigate(`/game/${level + 1}`, { replace: true });
+            setSteps([]);
+            setBeebot(startCoord);
+        }
+      }, [finishedLevel, level]);
 
 
     function handleLeftButtons() {
@@ -202,8 +221,12 @@ function Game() {
         
         }else if(currState === 1){
             setBeebot({ x: x, y: y, o: o });
-            setFinishedGame(true);
-        
+
+            if(level === 3){
+                setFinishedGame(true);
+            }else{
+                setFinishedLevel(true);
+            }
         }else{
             console.log("Error: this way does not lead to the goal.");
             setGameOver(true);
@@ -232,6 +255,10 @@ function Game() {
 
     function checkCompletedInteraction() {
         return beebotInteraction[index] === undefined;
+    }
+
+    function reset() {
+        
     }
 
     function renderInteraction() {
@@ -263,7 +290,6 @@ function Game() {
 
     function renderButtons() {
         if (isLevelOne && !isCompleted) {
-            console.log(startCoord);
             return (
                 <div className='button-wrapper'>
                     <button className={index === 8 ? 'black-button glow' : 'black-button'} onClick={handleLeftButtons} disabled={index < 8}>
@@ -301,16 +327,19 @@ function Game() {
     return (
         <div className="game-background">
             <main>
+                <Container fluid>
                 <Row>
                     {/* BeeBot which helps you during the game */}
                     <Col lg={3} md={3} sm={3}>
-                    <div class="form-check form-switch">
+                        <Row>
+                        <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={handleToggle}></input>
                                 <label class="form-check-label" for="flexSwitchCheckDefault">Schritte verbergen</label>
                             </div>
+                        </Row>
                         <Row>
                             <div className='message-assistant'>
-                            {isLevelOne ? <div> { renderInteraction() } </div> : <div> { renderSteps() } </div> }
+                                {isLevelOne ? <div> { renderInteraction() } </div> : <div> { renderSteps() } </div> }
                             </div>
                         </Row>
                         <Row>
@@ -330,16 +359,23 @@ function Game() {
                             </Container>
                     </Col>
                 </Row>
+                </Container>
             
             </main>
             {/* Triggers message which says the current state of the game */}
             <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver}>
                 <h3>Probiere es nocheinmal</h3>
             </Message>
-            <Message color= {'orange'} trigger={finishedGame} setTrigger= {setFinishedGame}>
+            <Message color= {'orange'} trigger={finishedLevel} setTrigger= {setFinishedLevel}>
                 <h3>Gut gemacht.</h3>
                 <p>
                 BeeBot hat erfolgreich das Ziel erreicht.
+                </p>
+            </Message>
+            <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame}>
+                <h3>Juhuu wir haben es geschafft!!</h3>
+                <p>
+                Danke für deine Hilfe! Wenn du magst kannst du 
                 </p>
             </Message>
             
