@@ -31,7 +31,7 @@ function App() {
     return (
         <div>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/game/:levelId" element={<Game />} />
             </Routes>
         </div>

@@ -26,8 +26,8 @@ function Game() {
     const [gameOver, setGameOver] = useState(false);
     const [finishedLevel, setFinishedLevel] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
+    const [returnToHome, setReturnToHome] = useState(false);
 
-    const [level, setLevel] = useState(1); 
 
      /*
     The game contains 3 levels from easy to hard.
@@ -72,7 +72,7 @@ function Game() {
     const startCoords = [
         { x: 3, y: 2, o: "n"},
         { x: 4, y: 0, o: "e"},
-        { x: 4, y: 0, o: "n" },
+        { x: 0, y: 2, o: "n" },
     ];
 
     /*
@@ -105,6 +105,12 @@ function Game() {
         setHiddenSteps(event.target.checked);
       };
 
+      const handleClose = () => {
+
+        setReturnToHome(true);
+      
+      };
+
       useEffect(() => {
         if (isCompleted || gameOver) {
             setSteps([]);
@@ -113,12 +119,25 @@ function Game() {
       }, [isCompleted, gameOver]);
 
       useEffect(() => {
-        if (finishedLevel && level !== 3) {
-            navigate(`/game/${level + 1}`, { replace: true });
+        if (finishedLevel) {
+            let newLevelId = parseInt(levelId)+ 1;
+            navigate(`/game/${newLevelId}`, { replace: true });
+            // reset steps array
             setSteps([]);
-            setBeebot(startCoord);
+            
+            let newStartCoord = getStartCoordsById(newLevelId)
+            setBeebot(newStartCoord);
         }
-      }, [finishedLevel, level]);
+      }, [finishedLevel]);
+
+      useEffect(() => {
+        if (returnToHome) {
+            console.log('success: ' + returnToHome);
+            navigate(`/home`, { replace: true });
+        }
+        console.log('fail: ' + returnToHome);
+
+      }, [returnToHome]);
 
 
     function handleLeftButtons() {
@@ -222,7 +241,7 @@ function Game() {
         }else if(currState === 1){
             setBeebot({ x: x, y: y, o: o });
 
-            if(level === 3){
+            if(parseInt(levelId) === 3){
                 setFinishedGame(true);
             }else{
                 setFinishedLevel(true);
@@ -363,7 +382,7 @@ function Game() {
             
             </main>
             {/* Triggers message which says the current state of the game */}
-            <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver}>
+            <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver} onClose={() => setReturnToHome(true)}>
                 <h3>Probiere es nocheinmal</h3>
             </Message>
             <Message color= {'orange'} trigger={finishedLevel} setTrigger= {setFinishedLevel}>
@@ -372,7 +391,7 @@ function Game() {
                 BeeBot hat erfolgreich das Ziel erreicht.
                 </p>
             </Message>
-            <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame}>
+            <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} onClose={handleClose}>
                 <h3>Juhuu wir haben es geschafft!!</h3>
                 <p>
                 Danke für deine Hilfe! Wenn du magst kannst du 
