@@ -75,6 +75,7 @@ function Game() {
         { x: 0, y: 2, o: "n" },
     ];
 
+
     /*
     Get map by Level Id
     */
@@ -108,11 +109,11 @@ function Game() {
       };
 
       useEffect(() => {
-        if (isCompleted || gameOver) {
+        if (isCompleted) {
             setSteps([]);
             setBeebot(startCoord);
         }
-      }, [isCompleted, gameOver]);
+      }, [isCompleted]);
 
       useEffect(() => {
         if (finishedLevel) {
@@ -275,7 +276,7 @@ function Game() {
     function renderInteraction() {
         if (!isCompleted) {
             return (
-                    <p className='message-assistant-content'>
+                    <p className='message-assistant-content' style={{textAlign: 'center'}}>
                         {beebotInteraction[index]}
                         <br></br>
                         <button className='button-next' onClick={increaseIndex}>Weiter</button>
@@ -302,17 +303,17 @@ function Game() {
         if (isLevelOne && !isCompleted) {
             return (
                 <div className='button-wrapper'>
-                    <button className={index === 8 ? 'black-button glow' : 'black-button'} onClick={handleLeftButtons} disabled={index < 8}>
+                    <button className='black-button' onClick={handleLeftButtons} disabled={index < 7}>
                         <FontAwesomeIcon icon={faArrowLeft} color="white" />
                     </button>
-                    <button className={index === 5 || index === 8 ? 'black-button glow' : 'black-button'} onClick={handleForwardButtons} disabled={index < 5}>
+                    <button className={index === 3 || index === 7 ? 'black-button glow' : 'black-button'} onClick={handleForwardButtons} disabled={index < 3}>
                         <FontAwesomeIcon icon={faArrowUp} color="white" />
                     </button>
-                    <button className='black-button' onClick={handleRightButtons} disabled={index < 8}>
+                    <button className={index === 7 ? 'black-button glow' : 'black-button'} onClick={handleRightButtons} disabled={index < 7}>
                         <FontAwesomeIcon icon={faArrowRight} color="white" />
                     </button>
 
-                    <button className={index === 5 || index === 8 ? 'green-button glow' : 'green-button'} onClick={handleGoButton} disabled={index < 5}>GO</button>
+                    <button className={index === 3 || index === 7 ? 'green-button glow' : 'green-button'} onClick={handleGoButton} disabled={index < 3}>GO</button>
                 </div>
               ); 
         }
