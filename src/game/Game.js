@@ -99,13 +99,9 @@ function Game() {
     // Booleans for rendering HTML elements
     const isLevelOne = checkLevel(levelId);
     const isCompleted = checkCompletedInteraction();
-    const [isHidden, setHiddenSteps] = useState(false);
+    const [toggled, setToggled] = useState(false);
 
-    const handleToggle = (event) => {
-        setHiddenSteps(event.target.checked);
-      };
-
-      const handleClose = () => {
+    const handleClose = () => {
 
         setReturnToHome(true);
       
@@ -157,7 +153,7 @@ function Game() {
     function handleForwardButtons() {
         setSteps([
             ...steps,
-            { name: 'forward', data: 'ein Schritt nach vorne' }
+            { name: 'forward', data: 'vorwärts' }
           ]);
     }
 
@@ -276,31 +272,26 @@ function Game() {
         return beebotInteraction[index] === undefined;
     }
 
-    function reset() {
-        
-    }
-
     function renderInteraction() {
         if (!isCompleted) {
             return (
-                <div className='message-assistant'>
                     <p className='message-assistant-content'>
                         {beebotInteraction[index]}
                         <br></br>
                         <button className='button-next' onClick={increaseIndex}>Weiter</button>
                     </p>
-                </div>
+                
               ); 
         }
         return (<div> {renderSteps()} </div>);
     }
 
     function renderSteps() {
-        if (!isHidden) {
+        if (!toggled) {
             return (
                 <p className='message-assistant-content'>
                     {steps.map(step => (
-                    <li>{step.data}</li>))}
+                    <div>{step.data}</div>))}
                 </p>
               ); 
         }
@@ -351,10 +342,13 @@ function Game() {
                     {/* BeeBot which helps you during the game */}
                     <Col lg={3} md={3} sm={3}>
                         <Row>
-                        <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={handleToggle}></input>
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Schritte verbergen</label>
-                            </div>
+                            <div style={{ display: 'flex' }}>
+                                <button className={`toggle-btn ${toggled ? "toggled": ""}`}
+                                onClick={() => setToggled(!toggled)}>
+                                    <div className='thumb'></div>
+                                </button>
+                                <p style={{ marginLeft: '18px', marginTop: '10px' }}>Schritte verbergen</p>
+                                </div>
                         </Row>
                         <Row>
                             <div className='message-assistant'>
@@ -383,16 +377,16 @@ function Game() {
             </main>
             {/* Triggers message which says the current state of the game */}
             <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver} onClose={() => setReturnToHome(true)}>
-                <h3>Probiere es nocheinmal</h3>
+                <h1>Probiere es nocheinmal</h1>
             </Message>
             <Message color= {'orange'} trigger={finishedLevel} setTrigger= {setFinishedLevel}>
-                <h3>Gut gemacht.</h3>
+                <h1>Gut gemacht.</h1>
                 <p>
                 BeeBot hat erfolgreich das Ziel erreicht.
                 </p>
             </Message>
             <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} onClose={handleClose}>
-                <h3>Juhuu wir haben es geschafft!!</h3>
+                <h1>Juhuu wir haben es geschafft!!</h1>
                 <p>
                 Danke für deine Hilfe! Wenn du magst kannst du 
                 </p>

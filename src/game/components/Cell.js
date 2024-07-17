@@ -15,12 +15,14 @@ export default function Cell(props){
 
     return(
     <div className="cell">
-        <div >
+        <div>
             <img src={image}
             alt='beebot'
             height={100}
             width={100}
             style={{
+                marginLeft: '8px',
+                alignSelf: 'center',
                 transform: `rotate(${orientation === 'n' ? 0 : orientation === 'e' ? 90 : orientation === 's' ? 180 : 270}deg)`
             }}
             ></img>
