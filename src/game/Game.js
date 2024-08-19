@@ -109,11 +109,11 @@ function Game() {
       };
 
       useEffect(() => {
-        if (isCompleted) {
+        if (isCompleted || gameOver) {
             setSteps([]);
             setBeebot(startCoord);
         }
-      }, [isCompleted]);
+      }, [isCompleted, gameOver]);
 
       useEffect(() => {
         if (finishedLevel) {
