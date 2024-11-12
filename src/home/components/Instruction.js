@@ -15,4 +15,3 @@ function Instruction(props) {
 }
 
 export default Instruction;
-

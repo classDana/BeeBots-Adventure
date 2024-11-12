@@ -1,5 +1,4 @@
 {
-
     "phrases": [
         "Hallo. Ich bin dein persönlicher BeeBot. Du musst mich sicher zum Picknick führen, indem du die richtigen Befehle gibst.",
         "Achtung, auf dem Weg zum Picknick gibt es Barrieren, die du umgehen musst.",
@@ -11,10 +10,10 @@
         "Benutze die 'Rechts'-Taste, um mich 90 Grad nach rechts zu drehen und bringe mich schließlich wieder nach vorne.",
         "Das machst du toll! Ich rieche schon den leckeren Picknick-Korb!",
         "Denke daran, dass du mich immer wieder drehen musst, um den Barrieren aus dem Weg zu gehen.",
-        "Dann veruche ohne mich das Ziel zu erreichen und versuche alle Anweisungen in die richtigen Reihenfolge zu drücken.",
+        "Dann versuche ohne mich das Ziel zu erreichen und versuche alle Anweisungen in die richtige Reihenfolge zu drücken.",
         "Wenn du dir sicher bist, dass du den richtigen Weg gefunden hast, drücke die 'Go'-Taste, um alle Befehle auszuführen.",
         "Als Hilfe kann ich die Anweisungen, die du bedient hast, wiederholen.",
         "Ansonsten kannst du den oberen Schalter bedienen, wenn du keine Hilfe brauchst.",
         "Wünsche dir viel Erfolg!"
     ]
-  }
+}

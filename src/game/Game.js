@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Board from "./components/Board";
+import BeeBotUI from "./components/BeeBotUI";
 import Message from "./components/Message";
 import BeeBotFigure from "../images/BeeBot_figure.png";
 import { Row, Col, Container } from 'react-bootstrap';
@@ -103,9 +104,7 @@ function Game() {
     const [toggled, setToggled] = useState(false);
 
     const handleClose = () => {
-
         setReturnToHome(true);
-      
       };
 
       useEffect(() => {
@@ -212,7 +211,11 @@ function Game() {
                 }
             }
         await timer(1000);
-        }        
+        }    
+        // Delets steps during the interaction
+        if(!isCompleted){
+            setSteps([]);
+        }  
     }
 
 
@@ -286,7 +289,6 @@ function Game() {
         }
         return (<div> {renderSteps()} </div>);
     }
-
     function renderSteps() {
         if (!toggled) {
             return (
@@ -352,9 +354,11 @@ function Game() {
                                 </div>
                         </Row>
                         <Row>
+                           
                             <div className='message-assistant'>
                                 {isLevelOne ? <div> { renderInteraction() } </div> : <div> { renderSteps() } </div> }
                             </div>
+                           
                         </Row>
                         <Row>
                             <div className='beebot'>
@@ -386,10 +390,10 @@ function Game() {
                 BeeBot hat erfolgreich das Ziel erreicht.
                 </p>
             </Message>
-            <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} onClose={handleClose}>
+            <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} gameStatus= {true}>
                 <h1>Juhuu wir haben es geschafft!!</h1>
                 <p>
-                Danke für deine Hilfe! Wenn du magst kannst du 
+                Danke für deine Hilfe! Wenn du magst kannst du
                 </p>
             </Message>
             
