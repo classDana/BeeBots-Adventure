@@ -103,37 +103,43 @@ function Game() {
     const isCompleted = checkCompletedInteraction();
     const [toggled, setToggled] = useState(false);
 
-    const handleClose = () => {
-        setReturnToHome(true);
-      };
+    useEffect(() => {
+    if (isCompleted || gameOver) {
+        setSteps([]);
+        setBeebot(startCoord);
+    }
+    }, [isCompleted, gameOver]);
 
-      useEffect(() => {
-        if (isCompleted || gameOver) {
-            setSteps([]);
-            setBeebot(startCoord);
+    useEffect(() => {
+    if (finishedLevel) {
+        let newLevelId = parseInt(levelId)+ 1;
+        navigate(`/game/${newLevelId}`, { replace: true });
+        // reset steps array
+        setSteps([]);
+        
+        let newStartCoord = getStartCoordsById(newLevelId)
+        setBeebot(newStartCoord);
+    }
+    }, [finishedLevel]);
+
+    useEffect(() => {
+    if (returnToHome) {
+        console.log('success: ' + returnToHome);
+        navigate(`/home`, { replace: true });
+    }
+    console.log('fail: ' + returnToHome);
+
+    }, [returnToHome]);
+
+    useEffect(() => {
+        console.log(beebot.x, beebot.y);
+        if (index === 3 && beebot.x === 2 && beebot.y === 2) {
+            increaseIndex();
         }
-      }, [isCompleted, gameOver]);
-
-      useEffect(() => {
-        if (finishedLevel) {
-            let newLevelId = parseInt(levelId)+ 1;
-            navigate(`/game/${newLevelId}`, { replace: true });
-            // reset steps array
-            setSteps([]);
-            
-            let newStartCoord = getStartCoordsById(newLevelId)
-            setBeebot(newStartCoord);
+        if (index === 7 && beebot.x === 2 && beebot.y === 3) {
+            increaseIndex();
         }
-      }, [finishedLevel]);
-
-      useEffect(() => {
-        if (returnToHome) {
-            console.log('success: ' + returnToHome);
-            navigate(`/home`, { replace: true });
-        }
-        console.log('fail: ' + returnToHome);
-
-      }, [returnToHome]);
+    }, [beebot, index]);
 
 
     function handleLeftButtons() {
@@ -237,7 +243,6 @@ function Game() {
 
         if(currState === 0){
             setBeebot({ x: x, y: y, o: o });
-        
         }else if(currState === 1){
             setBeebot({ x: x, y: y, o: o });
 
@@ -277,18 +282,28 @@ function Game() {
     }
 
     function renderInteraction() {
-        if (!isCompleted) {
-            return (
-                    <p className='message-assistant-content' style={{textAlign: 'center'}}>
-                        {beebotInteraction[index]}
-                        <br></br>
-                        <button className='button-next' onClick={increaseIndex}>Weiter</button>
-                    </p>
-                
-              ); 
-        }
-        return (<div> {renderSteps()} </div>);
-    }
+    const isBeeBotAtPosition3 = index === 3 && beebot.x === 2 && beebot.y === 2;
+    const isBeeBotAtPosition7 = index === 7 && beebot.x === 3 && beebot.y === 2;
+
+
+
+    return !isCompleted ? (
+        <p className='message-assistant-content' style={{ textAlign: 'center' }}>
+            {beebotInteraction[index]}
+            <br />
+            <button
+                className='button-next'
+                onClick={increaseIndex}
+                disabled={(index === 3 && !isBeeBotAtPosition3) || (index === 7 && !isBeeBotAtPosition7)}
+            >
+                Weiter
+            </button>
+        </p>
+    ) : (
+        <div>{renderSteps()}</div>
+    );
+}
+
     function renderSteps() {
         if (!toggled) {
             return (
@@ -335,7 +350,6 @@ function Game() {
             </div>
           );
     }
-
  
     return (
         <div className="game-background">
@@ -390,7 +404,7 @@ function Game() {
                 BeeBot hat erfolgreich das Ziel erreicht.
                 </p>
             </Message>
-            <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} gameStatus= {true}>
+            <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} gameStatus= {finishedGame}>
                 <h1>Juhuu wir haben es geschafft!!</h1>
                 <p>
                 Danke für deine Hilfe! Wenn du magst kannst du
