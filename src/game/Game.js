@@ -4,7 +4,7 @@ import Message from "./components/Message";
 import BeeBotFigure from "../images/BeeBot_figure.png";
 import { Row, Col, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faArrowUp, faRotateBackward } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import jsonData from "./game_assets/beebot_phrases.json";
 import './Game.css'
@@ -224,6 +224,10 @@ function Game() {
         }  
     }
 
+    function reset(){
+        setBeebot(startCoord);
+        setSteps([]);
+    }
 
 
     /**
@@ -359,6 +363,10 @@ function Game() {
                     </button>
 
                     <button className={index === 3 || index === 7 ? 'green-button glow' : 'green-button'} onClick={handleGoButton} disabled={index < 3}>GO</button>
+                
+                    <button className='black-button' onClick={reset}>
+                        <FontAwesomeIcon icon={faRotateBackward} color="white" />
+                    </button>
                 </div>
               ); 
         }
@@ -375,6 +383,10 @@ function Game() {
                 </button>
 
                 <button className='green-button' onClick={handleGoButton}>GO</button>
+                
+                <button className='black-button' onClick={reset}>
+                        <FontAwesomeIcon icon={faRotateBackward} color="white" />
+                    </button>
             </div>
           );
     }
