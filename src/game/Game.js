@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Board from "./components/Board";
-import BeeBotUI from "./components/BeeBotUI";
 import Message from "./components/Message";
 import BeeBotFigure from "../images/BeeBot_figure.png";
 import { Row, Col, Container } from 'react-bootstrap';
@@ -101,6 +100,7 @@ function Game() {
     // Booleans for rendering HTML elements
     const isLevelOne = checkLevel(levelId);
     const isCompleted = checkCompletedInteraction();
+    const [showTutorialPrompt, setShowTutorialPrompt] = useState(true);
     const [toggled, setToggled] = useState(false);
 
     useEffect(() => {
@@ -282,27 +282,55 @@ function Game() {
     }
 
     function renderInteraction() {
-    const isBeeBotAtPosition3 = index === 3 && beebot.x === 2 && beebot.y === 2;
-    const isBeeBotAtPosition7 = index === 7 && beebot.x === 3 && beebot.y === 2;
-
-
-
-    return !isCompleted ? (
-        <p className='message-assistant-content' style={{ textAlign: 'center' }}>
-            {beebotInteraction[index]}
-            <br />
-            <button
-                className='button-next'
-                onClick={increaseIndex}
-                disabled={(index === 3 && !isBeeBotAtPosition3) || (index === 7 && !isBeeBotAtPosition7)}
-            >
-                Weiter
-            </button>
-        </p>
-    ) : (
-        <div>{renderSteps()}</div>
-    );
-}
+        const isBeeBotAtPosition3 = index === 3 && beebot.x === 2 && beebot.y === 2;
+        const isBeeBotAtPosition7 = index === 7 && beebot.x === 3 && beebot.y === 2;
+    
+        const handleTutorialChoice = (needsTutorial) => {
+            setShowTutorialPrompt(false); // Schließt die Auswahl
+            if (!needsTutorial) {
+                setIndex(beebotInteraction.length); // Überspringt die Interaktion
+            }
+        };
+    
+        if (showTutorialPrompt) {
+            return (
+                <div className="message-assistant-content" style={{ textAlign: 'center' }}>
+                    <p>Möchtest du das Tutorial starten?</p>
+                    <p>
+                    <button
+                        className="button-next"
+                        onClick={() => handleTutorialChoice(true)}
+                    >
+                        Ja
+                    </button>
+                    <button
+                        className="button-next"
+                        onClick={() => handleTutorialChoice(false)}
+                    >
+                        Nein
+                    </button>
+                    </p>
+                </div>
+            );
+        }
+    
+        return !isCompleted ? (
+            <p className="message-assistant-content" style={{ textAlign: 'center' }}>
+                {beebotInteraction[index]}
+                <br />
+                <button
+                    className="button-next"
+                    onClick={increaseIndex}
+                    disabled={(index === 3 && !isBeeBotAtPosition3) || (index === 7 && !isBeeBotAtPosition7)}
+                >
+                    Weiter
+                </button>
+            </p>
+        ) : (
+            <div>{renderSteps()}</div>
+        );
+    }
+    
 
     function renderSteps() {
         if (!toggled) {
