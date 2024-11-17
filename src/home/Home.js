@@ -4,18 +4,18 @@ import directionButtons from "../images/directionButtons.png";
 import goButton from "../images/goButton.png";
 import { Container, Row, Col} from 'react-bootstrap';
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
     const [btnInstruction, setBtnInstruction] = useState(false);
+    const navigate = useNavigate();
     return (
         <div className="home-page">
             <Container>
                 <Row className="justify-content-md-center">
                     <Col>
                         {/* Start button for the game */}
-                        <a href="/game/1">
-                            <button className="custom-button">Starten</button>
-                        </a>
+                        <button className="custom-button" onClick={() => navigate('/game/1')}>Starten</button>
                     </Col>
                     <Col>
                         {/* Introduction button */}

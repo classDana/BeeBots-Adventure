@@ -13,13 +13,14 @@
   justify-content: center;
   align-items: flex-end;
   margin-top: -120px;
+  position: relative;
 }
 
 .button-wrapper{
     display: flex;
     justify-content: space-between;
 }
-
+.blue-button,
 .black-button,
 .green-button {
   border-radius: 70%;
@@ -33,18 +34,24 @@
   text-align:center;
   margin-right: 10px;
 }
+.blue-button{
+  background-color: #7ebadf;
+}
+.black-button{
+  background-color: black;
+}
+.green-button{
+  background-color: green;
+}
+.blue-button:hover{
+  background-color: #97c0d9;
+}
 .black-button:hover{
   background-color: #75726c;
 }
 .green-button:hover{
   background-color: #9fef44;
 }
-.black-button{
-    background-color: black;
-  }
-.green-button{
-    background-color: green;
-  }
 .black-button.glow {
   animation: glowing-black 1.3s infinite;
   }
@@ -60,7 +67,7 @@
   }
 
   .board {
-    margin-top: -30px;;
+    margin-top: -60px;;
     overflow: hidden;
     display:grid;
     border: 9px solid black;
@@ -132,8 +139,8 @@
   justify-content: flex-start;
   word-wrap: break-word;
   text-align: center;
-  max-height: 450px; /* Set a maximum height */
-  overflow-y: auto; /* Enable vertical scrolling when content overflows */
+  max-height: 420px;
+  overflow-y: auto;
 }
 
 .close-btn{
@@ -216,22 +223,42 @@
   justify-content: center;
   align-items: center;
 }
+.setting-button {
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  width: 160px; 
+  margin-top: 10%;
+}
+
+.setting-button:hover {
+  background-color: lightgray;
+}
+
+.setting-button:active {
+  background-color: lightgray;
+}
+
 
 
 @keyframes glowing-black {
   0% {
-    background-color: #000; /* black */
-    color: #a79e9e; /* white */
+    background-color: #000;
+    color: #a79e9e;
   }
 
   50% {
-    background-color: #a79e9e; /* white */
-    color: #000; /* black */
+    background-color: #a79e9e;
+    color: #000; 
   }
 
   100% {
-    background-color: #000; /* black */
-    color: #a79e9e; /* white */
+    background-color: #000; 
+    color: #a79e9e;
   }
 }
 @keyframes glowing-green {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Board from "./components/Board";
 import Message from "./components/Message";
 import BeeBotFigure from "../images/BeeBot_figure.png";
@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faArrowUp, faRotateBackward } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import jsonData from "./game_assets/beebot_phrases.json";
+import gameMusic from "./game_assets/game_music.mp3";
 import './Game.css'
 
 /*
@@ -27,6 +28,8 @@ function Game() {
     const [finishedLevel, setFinishedLevel] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
     const [returnToHome, setReturnToHome] = useState(false);
+    const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+    const audioRef = useRef(null);
 
 
      /*
@@ -140,6 +143,37 @@ function Game() {
             increaseIndex();
         }
     }, [beebot, index]);
+
+    useEffect(() => {
+        if (audioRef.current && isMusicPlaying) {
+            audioRef.current
+                .play()
+                .catch((error) => {
+                    console.error("Autoplay-Fehler:", error);
+                });
+        }
+    }, []);
+    
+      
+      
+      
+      const toggleMusic = () => {
+        if (audioRef.current) {
+          if (isMusicPlaying) {
+            audioRef.current.pause();
+          } else {
+            audioRef.current
+              .play()
+              .catch((error) => {
+                console.error("Musik konnte nicht abgespielt werden:", error);
+                alert("Bitte klicke auf die Seite, um die Musik abzuspielen.");
+              });
+          }
+          setIsMusicPlaying(!isMusicPlaying);
+        }
+      };
+      
+    
 
 
     function handleLeftButtons() {
@@ -310,6 +344,7 @@ function Game() {
                     <button
                         className="button-next"
                         onClick={() => handleTutorialChoice(false)}
+                        style={{marginLeft: '10px'}}
                     >
                         Nein
                     </button>
@@ -337,7 +372,7 @@ function Game() {
     
 
     function renderSteps() {
-        if (!toggled) {
+        if (!toggled && steps.length > 0) {
             return (
                 <p className='message-assistant-content'>
                     {steps.map(step => (
@@ -364,7 +399,7 @@ function Game() {
 
                     <button className={index === 3 || index === 7 ? 'green-button glow' : 'green-button'} onClick={handleGoButton} disabled={index < 3}>GO</button>
                 
-                    <button className='black-button' onClick={reset}>
+                    <button className='blue-button' onClick={reset}>
                         <FontAwesomeIcon icon={faRotateBackward} color="white" />
                     </button>
                 </div>
@@ -384,7 +419,7 @@ function Game() {
 
                 <button className='green-button' onClick={handleGoButton}>GO</button>
                 
-                <button className='black-button' onClick={reset}>
+                <button className='blue-button' onClick={reset}>
                         <FontAwesomeIcon icon={faRotateBackward} color="white" />
                     </button>
             </div>
@@ -393,19 +428,29 @@ function Game() {
  
     return (
         <div className="game-background">
+            <audio ref={audioRef} src={gameMusic} loop/>
             <main>
                 <Container fluid>
                 <Row>
                     {/* BeeBot which helps you during the game */}
-                    <Col lg={3} md={3} sm={3}>
+                    <Col lg={3} md={4} sm={4}>
                         <Row>
                             <div style={{ display: 'flex' }}>
-                                <button className={`toggle-btn ${toggled ? "toggled": ""}`}
-                                onClick={() => setToggled(!toggled)}>
-                                    <div className='thumb'></div>
-                                </button>
-                                <p style={{ marginLeft: '18px', marginTop: '10px' }}>Schritte verbergen</p>
-                                </div>
+                                <p>
+                                    {/* toogler for music */}
+                                    <button className='setting-button' onClick={toggleMusic} loop>
+                                        {isMusicPlaying ? "Musik pausieren" : "Musik abspielen"}
+                                    </button>
+                                </p>
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                                <p> 
+                                    {/* toogler for steps */}
+                                    <button className="setting-button" onClick={() => setToggled(!toggled)} style={{marginTop: '-10px'}}>
+                                        {toggled ? "Schritte anzeigen" : "Schritte verbergen"}
+                                    </button>
+                                </p>
+                            </div>
                         </Row>
                         <Row>
                            
@@ -421,7 +466,7 @@ function Game() {
                         </Row>
                     </Col>
                     {/* Board game with the associated buttons */}
-                    <Col lg={8} md={9} sm={9}>
+                    <Col lg={8} md={8} sm={8}>
                             <Container style={{ marginBottom: '-310px' }}>
                                 <Board map={map.data} beebot={beebot} getCurrState={getCurrState}></Board>
                             </Container>

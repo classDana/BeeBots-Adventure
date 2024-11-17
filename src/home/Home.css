@@ -1,14 +1,13 @@
 .home-page {
-    background-image: url('../images/homepage.png');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-origin: padding-box;
-    min-height: 100%;
-    min-width: 100%;
-    position: absolute;
-  }
+  background-image: url('../images/homepage.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  width: 100vw; 
+  height: 100vh; 
+}
+
   
   .container {
     display: flex;
@@ -22,8 +21,8 @@
     border-radius: 20px;
     color: white;
     font-size: 30px;
-    width: 150px; /* Breite der Buttons */
-    height: 60px; /* Höhe der Buttons */
+    width: 150px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
