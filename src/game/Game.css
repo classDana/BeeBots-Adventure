@@ -35,7 +35,7 @@
   margin-right: 10px;
 }
 .blue-button{
-  background-color: #7ebadf;
+  background-color: #6282dc;
 }
 .black-button{
   background-color: black;
@@ -44,7 +44,7 @@
   background-color: green;
 }
 .blue-button:hover{
-  background-color: #97c0d9;
+  background-color: #8aa3e8;
 }
 .black-button:hover{
   background-color: #75726c;

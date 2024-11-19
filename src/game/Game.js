@@ -481,18 +481,18 @@ function Game() {
             </main>
             {/* Triggers message which says the current state of the game */}
             <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver} onClose={() => setReturnToHome(true)}>
-                <h1>Probiere es nocheinmal</h1>
+                <h1 style={{ color: 'white', fontSize:'45px' }}>Probiere es nocheinmal</h1>
             </Message>
             <Message color= {'orange'} trigger={finishedLevel} setTrigger= {setFinishedLevel}>
-                <h1>Gut gemacht.</h1>
+                <h1 style={{ color: 'white', fontSize:'45px' }}> Gut gemacht.</h1>
                 <p>
                 BeeBot hat erfolgreich das Ziel erreicht.
                 </p>
             </Message>
             <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} gameStatus= {finishedGame}>
-                <h1>Juhuu wir haben es geschafft!!</h1>
+                <h1 style={{ color: 'white', fontSize:'45px' }}>Juhuu wir haben es geschafft!!</h1>
                 <p>
-                Danke für deine Hilfe! Wenn du magst kannst du
+                Danke für deine Hilfe! Jetzt bin ich satt!
                 </p>
             </Message>
             

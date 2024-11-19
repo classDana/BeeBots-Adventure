@@ -66,7 +66,7 @@ export default function Board(props){
      */
     function createCell(i,j,image,o) {
         return(
-            <Col lg={2} md={2} sm={3} className="p-0">
+            <Col lg={2} md={2} sm={2} className="p-0">
                 <Cell
                     key={`${i}-${j}`}
                     image={image}

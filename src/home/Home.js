@@ -2,6 +2,7 @@ import './Home.css'
 import Instruction from "./components/Instruction";
 import directionButtons from "../images/directionButtons.png";
 import goButton from "../images/goButton.png";
+import reserveButton from "../images/reserveButton.png";
 import { Container, Row, Col} from 'react-bootstrap';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +38,11 @@ function Home() {
                 </div>
                 <p>Nachdem du den BeeBot programmiert hast, klicke auf "Go", um
                     zu sehen, wie der BeeBot deine Anweisungen ausführt.</p>
+                <div className="button-image">
+                    <img src={reserveButton} alt="go" height={100} width={140}></img>
+                </div>
+                <p>Wenn du das Ziel nicht geschafft hast oder bei den Schritten einen Fehler gemacht hast,
+                    kannst du mit dem "Zurück" Knopf die Schritte zurücksetzen.</p>
             </Instruction>
                 
         </div>
