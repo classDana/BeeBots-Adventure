@@ -75,7 +75,7 @@ function Game() {
     const startCoords = [
         { x: 3, y: 2, o: "n"},
         { x: 4, y: 0, o: "e"},
-        { x: 0, y: 2, o: "n" },
+        { x: 4, y: 0, o: "n" },
     ];
 
 
