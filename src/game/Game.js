@@ -108,10 +108,14 @@ function Game() {
 
     useEffect(() => {
     if (isCompleted || gameOver) {
+        if (index === 7) {
+            setBeebot({ x: 2, y: 2, o: 'n' });
+        } else {
+            setBeebot(startCoord);
+        }
         setSteps([]);
-        setBeebot(startCoord);
     }
-    }, [isCompleted, gameOver]);
+    }, [isCompleted, gameOver, index]);
 
     useEffect(() => {
     if (finishedLevel) {
@@ -292,6 +296,7 @@ function Game() {
         }else{
             console.log("Error: this way does not lead to the goal.");
             setGameOver(true);
+            
         }
     }
 
@@ -307,9 +312,15 @@ function Game() {
         } 
     }
 
-    function increaseIndex() {
-        setIndex(index+1);
-    }
+    const increaseIndex = () => {
+        if (index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1) {
+            setIndex(index + 1); // Weiter nur, wenn Zielbedingungen für index 3 erfüllt sind
+        } else if (index === 7 && beebot.x === 3 && beebot.y === 2 && steps.length === 2) {
+            setIndex(index + 1); // Weiter nur, wenn Zielbedingungen für index 7 erfüllt sind
+        } else if (index !== 3 && index !== 7) {
+            setIndex(index + 1); // Normales Verhalten für andere Indizes
+        }
+    }; 
 
     function checkLevel(levelId) {
         return parseInt(levelId) === 1;
@@ -320,13 +331,13 @@ function Game() {
     }
 
     function renderInteraction() {
-        const isBeeBotAtPosition3 = index === 3 && beebot.x === 2 && beebot.y === 2;
-        const isBeeBotAtPosition7 = index === 7 && beebot.x === 3 && beebot.y === 2;
+        const isBeeBotAtPosition3 = index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1;
+        const isBeeBotAtPosition7 = index === 7 && beebot.x === 3 && beebot.y === 2 && steps.length === 2;
     
         const handleTutorialChoice = (needsTutorial) => {
-            setShowTutorialPrompt(false); // Schließt die Auswahl
+            setShowTutorialPrompt(false); 
             if (!needsTutorial) {
-                setIndex(beebotInteraction.length); // Überspringt die Interaktion
+                setIndex(beebotInteraction.length);
             }
         };
     
@@ -399,7 +410,7 @@ function Game() {
 
                     <button className={index === 3 || index === 7 ? 'green-button glow' : 'green-button'} onClick={handleGoButton} disabled={index < 3}>GO</button>
                 
-                    <button className='blue-button' onClick={reset}>
+                    <button className='blue-button' onClick={reset} disabled={true}>
                         <FontAwesomeIcon icon={faRotateBackward} color="white" />
                     </button>
                 </div>
