@@ -131,22 +131,18 @@ function Game() {
 
     useEffect(() => {
     if (returnToHome) {
-        console.log('success: ' + returnToHome);
         navigate(`/home`, { replace: true });
     }
-    console.log('fail: ' + returnToHome);
-
     }, [returnToHome]);
 
     useEffect(() => {
-        console.log(beebot.x, beebot.y);
-        if (index === 3 && beebot.x === 2 && beebot.y === 2) {
+        if (index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1) {
             increaseIndex();
         }
-        if (index === 7 && beebot.x === 2 && beebot.y === 3) {
+        if (index === 7 && beebot.x === 2 && beebot.y === 3 && steps.length === 2) {
             increaseIndex();
         }
-    }, [beebot, index]);
+    }, [beebot, index,steps]);
 
     useEffect(() => {
         if (audioRef.current && isMusicPlaying) {
@@ -294,9 +290,7 @@ function Game() {
                 setFinishedLevel(true);
             }
         }else{
-            console.log("Error: this way does not lead to the goal.");
             setGameOver(true);
-            
         }
     }
 
@@ -313,9 +307,9 @@ function Game() {
     }
 
     const increaseIndex = () => {
-        if (index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1) {
+        if (index === 3 && beebot.x === 2 && beebot.y === 2) {
             setIndex(index + 1); // Weiter nur, wenn Zielbedingungen für index 3 erfüllt sind
-        } else if (index === 7 && beebot.x === 3 && beebot.y === 2 && steps.length === 2) {
+        } else if (index === 7 && beebot.x === 2 && beebot.y === 3) {
             setIndex(index + 1); // Weiter nur, wenn Zielbedingungen für index 7 erfüllt sind
         } else if (index !== 3 && index !== 7) {
             setIndex(index + 1); // Normales Verhalten für andere Indizes
@@ -384,15 +378,42 @@ function Game() {
 
     function renderSteps() {
         if (!toggled && steps.length > 0) {
+            const groupedSteps = groupSteps(steps);
             return (
                 <p className='message-assistant-content'>
-                    {steps.map(step => (
-                    <div>{step.data}</div>))}
+                    {groupedSteps.map((step, index) => (
+                        <div key={index}>
+                            {step.count > 1 ? `${step.count}x ${step.data}` : step.data}
+                        </div>
+                    ))}
                 </p>
-              ); 
+            );
         }
         return null;
     }
+    
+
+    function groupSteps(steps) {
+        if (!steps.length) return [];
+    
+        let grouped = [];
+        let currentStep = steps[0];
+        let count = 1;
+    
+        for (let i = 1; i < steps.length; i++) {
+            if (steps[i].name === currentStep.name) {
+                count++;
+            } else {
+                grouped.push({ ...currentStep, count });
+                currentStep = steps[i];
+                count = 1;
+            }
+        }
+    
+        grouped.push({ ...currentStep, count }); // Letztes Element hinzufügen
+        return grouped;
+    }
+    
 
     function renderButtons() {
         if (isLevelOne && !isCompleted) {
