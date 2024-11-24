@@ -9,11 +9,10 @@
   width: 100%;
 }
 .button-container {
+  position: absolute;
+  top: calc(100px + 77vh); 
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  margin-top: -120px;
-  position: relative;
 }
 
 .button-wrapper{
@@ -67,12 +66,17 @@
   }
 
   .board {
-    margin-top: -60px;;
+    position: absolute; /* Stellt sicher, dass das Board relativ zur Seite positioniert wird */
+    top: 50px; 
+    width: 80%;
+    max-width: 1000px;
     overflow: hidden;
-    display:grid;
+    display: grid;
     border: 9px solid black;
     border-radius: 3%;
-   }
+  }
+  
+  
 
   .cell {
     background-color: #026635;
