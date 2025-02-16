@@ -493,7 +493,7 @@ function Game() {
                         </Row>
                         <Row>
                             <div className='beebot'>
-                                <img src={BeeBotFigure} alt="beebot" height={120} width={150}></img>
+                                <img src={BeeBotFigure} alt="beebot" height={200} width={200}></img>
                             </div>
                         </Row>
                     </Col>
@@ -513,10 +513,10 @@ function Game() {
             </main>
             {/* Triggers message which says the current state of the game */}
             <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver} onClose={() => setReturnToHome(true)}>
-                <h1 style={{ color: 'white', fontSize:'45px' }}>Probiere es nocheinmal</h1>
+                <h1 style={{ color: 'white', fontSize:'45px' }}>Probiere es noch einmal!</h1>
             </Message>
             <Message color= {'orange'} trigger={finishedLevel} setTrigger= {setFinishedLevel}>
-                <h1 style={{ color: 'white', fontSize:'45px' }}> Gut gemacht.</h1>
+                <h1 style={{ color: 'white', fontSize:'45px' }}> Gut gemacht!</h1>
                 <p>
                 BeeBot hat erfolgreich das Ziel erreicht.
                 </p>
