@@ -1,6 +1,6 @@
+import './GameBoard.css'
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../Game.css';
 
 function Message(props) {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ function Message(props) {
             </button>
           </p>
         ) : (
-          <button className='close-btn' onClick={() => props.setTrigger(false)}>
+          <button className='close-button' onClick={() => props.setTrigger(false)}>
             x
           </button>
         )}

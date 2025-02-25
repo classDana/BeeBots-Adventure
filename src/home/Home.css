@@ -16,30 +16,33 @@
   flex-direction: column;
   height: 90%;
 }
-  .custom-button {
-    background-color: #f6a900;
-    border: 3px solid black;
-    border-radius: 20px;
-    color: white;
-    font-size: 30px;
-    width: 150px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "Chewy";
-    margin: 0%;
-  }
-  .custom-button:hover{
-    background-color: #d69301;
-  }
-  .inner{
-    padding:12px;
-  }
-  
-  .button-image{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: -5px;
-  }
+
+.custom-button {
+  background-color: #f6a900;
+  border: 3px solid black;
+  border-radius: 20px;
+  color: white;
+  font-size: 30px;
+  width: 150px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Chewy";
+  margin: 0%;
+}
+
+.custom-button:hover{
+  background-color: #d69301;
+}
+
+.inner{
+  padding:12px;
+}
+
+.button-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -5px;
+}

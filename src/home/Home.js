@@ -19,12 +19,13 @@ function Home() {
                         <button className="custom-button" onClick={() => navigate('/game/1')}>Starten</button>
                     </Col>
                     <Col>
-                        {/* Introduction button */}
+                        {/* Instruction button */}
                         <button className="custom-button" onClick={() => setBtnInstruction(true)}>Anleitung</button>
                     </Col>
                 </Row>
             </Container>
-                
+
+            {/* Instruction pop-up page*/}
             <Instruction trigger={btnInstruction} setTrigger = {setBtnInstruction}>
                 <h1>Anleitung</h1>
                 <div className="button-image">

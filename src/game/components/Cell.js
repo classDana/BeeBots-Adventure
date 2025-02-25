@@ -1,3 +1,4 @@
+import './GameBoard.css'
 import React, { useState } from 'react';
 
 
