@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Game } from './game';
 import { Home } from './home';
@@ -7,14 +7,10 @@ import './App.css';
 
 
 function App() {
+
+    // deactivate scrolling
     useEffect(() => {
-        // Scrollen deaktivieren
         document.body.style.overflow = 'hidden';
-    
-        // Scrollen wieder aktivieren, wenn der Effekt entfernt wird
-        return () => {
-          document.body.style.overflow = 'auto';
-        };
       }, []);
 
     return (
