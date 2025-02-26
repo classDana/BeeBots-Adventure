@@ -7,8 +7,8 @@ import picnicBasket from "../../images/maze-objects/picnic_basket.png";
 import pluralBushes from "../../images/maze-objects/plural_bushes.png";
 import tree from "../../images/maze-objects/tree.png";
 import bicycle from "../../images/maze-objects/bicycle.png";
-export default function Board(props){
 
+export default function Board(props){
     // set size for board
     const rows = 5;
     const columns = 6;
@@ -22,16 +22,7 @@ export default function Board(props){
             // check if the beebot is in the current position
             // and displays in the current cell
             if (props.beebot && props.beebot.x === i && props.beebot.y === j) {
-                row.push(
-                    <Col lg={2} md={2} sm={2} className="p-0">
-                        <Cell
-                            key={`${i}-${j}`}
-                            image={beebot}
-                            row={i}
-                            col={j}
-                            orientation={props.beebot.o}
-                        /></Col>
-                    ); 
+                row.push(createCell(i,j,beebot,props.beebot.o)); 
             } else {
 
                 // otherwise place obstacles based on the given ID 
@@ -64,13 +55,7 @@ export default function Board(props){
         mazeMap.push(<Row >{row}</Row>);
     }
 
-    /**
-     * 
-     * @param {*} i 
-     * @param {*} j 
-     * @param {*} image 
-     * @returns 
-     */
+    // creating cell and place given objects in the current index and orientation
     function createCell(i,j,image,o) {
         return(
             <Col lg={2} md={2} sm={2} className="p-0">
