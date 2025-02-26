@@ -1,5 +1,5 @@
 import './GameBoard.css'
-import React, { useState } from 'react';
+import React from 'react';
 
 
 export default function Cell(props){
@@ -24,7 +24,10 @@ export default function Cell(props){
             style={{
                 marginLeft: '8px',
                 alignSelf: 'center',
-                transform: `rotate(${orientation === 'n' ? 0 : orientation === 'e' ? 90 : orientation === 's' ? 180 : 270}deg)`
+                transform: `rotate(${
+                    orientation === 'n' ? 0 :
+                    orientation === 'e' ? 90 :
+                    orientation === 's' ? 180 : 270}deg)`
             }}
             ></img>
         </div>
