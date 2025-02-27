@@ -64,10 +64,11 @@ function Game() {
     // Toggler for the list of steps
     const [toggled, setToggled] = useState(false);
 
-    // State of game
+    // States of game
     const [gameOver, setGameOver] = useState(false);
     const [finishedLevel, setFinishedLevel] = useState(false);
     const [finishedGame, setFinishedGame] = useState(false);
+    
     const [returnToHome, setReturnToHome] = useState(false);
 
     // Current level id
@@ -181,21 +182,21 @@ function Game() {
     function handleLeftButtons() {
         setSteps([
             ...steps,
-            { name: 'left', data: '90 Grad nach links' }
+            { name: '90 Grad nach links', data: 'left' }
           ]);
     }
 
     function handleRightButtons() {
         setSteps([
             ...steps,
-            { name: 'right', data: '90 Grad nach rechts' }
+            { name: '90 Grad nach rechts', data: 'right' }
           ]);
     }
 
     function handleForwardButtons() {
         setSteps([
             ...steps,
-            { name: 'forward', data: 'vorwärts' }
+            { name: 'vorwärts', data: 'forward' }
           ]);
     }
 
@@ -207,7 +208,7 @@ function Game() {
 
         for (let i = 0; i < steps.length; i++){
 
-            let s = steps[i].name;
+            let s = steps[i].data;
 
             // Updates the board with the given coordinates and orientation
             if(s === "left"){
@@ -376,7 +377,7 @@ function Game() {
                 <p className='message-assistant-content'>
                     {groupedSteps.map((step, index) => (
                         <div key={index}>
-                            {step.count > 1 ? `${step.count}x ${step.data}` : step.data}
+                            {step.count > 1 ? `${step.count}x ${step.name}` : step.name}
                         </div>
                     ))}
                 </p>
@@ -394,7 +395,7 @@ function Game() {
         let count = 1;
     
         for (let i = 1; i < steps.length; i++) {
-            if (steps[i].name === currentStep.name) {
+            if (steps[i].data === currentStep.data) {
                 count++;
             } else {
                 grouped.push({ ...currentStep, count });
