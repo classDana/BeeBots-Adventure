@@ -99,8 +99,8 @@ function Game() {
     }; 
 
     // Boolean variables for conditional rendering of interaction 
-    const isLevelOne = (levelId) => {return parseInt(levelId) === 1;};
-    const isCompleted = beebotInteraction[index] === undefined;
+    const isLevelOne = checkFirstLevel(levelId);
+    const isCompleted = checkCompletedInteraction();
     const [showTutorialPrompt, setShowTutorialPrompt] = useState(true);
 
     // Background music
@@ -132,7 +132,7 @@ function Game() {
             let newStartCoord = getStartCoordsById(newLevelId)
             setBeebot(newStartCoord);
         }
-    }, [finishedLevel, getStartCoordsById, levelId, navigate]);
+    }, [finishedLevel]);
 
     // After pressing the return button at the end of the game,
     // you will be redirected to the home page
@@ -140,7 +140,7 @@ function Game() {
         if (returnToHome) {
             navigate(`/home`, { replace: true });
         }
-    }, [navigate, returnToHome]);
+    }, [returnToHome]);
 
     // Audio playback control
     useEffect(() => {
@@ -163,7 +163,7 @@ function Game() {
             }
             setSteps([]);
         }
-    }, [isCompleted, gameOver, index, startCoord]);
+    }, [isCompleted, gameOver, index]);
     
     // Tutorial continues when the Bee-Bot is on the right field
     useEffect(() => {
@@ -295,6 +295,15 @@ function Game() {
                 }
             }   
         } 
+    }
+
+    // Functions for the tutorial
+    function checkFirstLevel(levelId) {
+        return parseInt(levelId) === 1;
+    }
+
+    function checkCompletedInteraction() {
+        return beebotInteraction[index] === undefined;
     }
 
     // Set the Bee-Bot to the start position and
