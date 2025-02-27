@@ -10,154 +10,103 @@ import jsonData from "./game_assets/beebot_phrases.json";
 import gameMusic from "./game_assets/game_music.mp3";
 import './Game.css'
 
-/*
-    @Title: BeeBots Adventure
-    @Name: Daniela Milisic
-    @Date: xx.xx.xxxx
-    
-*/
-
 function Game() {
 
-    const navigate = useNavigate();
-    const [steps, setSteps] = useState([]);
-    const beebotInteraction = jsonData.phrases;
-    const [index, setIndex] = useState(0);
-    const [direction, setDirection] = useState('e');
-    const [gameOver, setGameOver] = useState(false);
-    const [finishedLevel, setFinishedLevel] = useState(false);
-    const [finishedGame, setFinishedGame] = useState(false);
-    const [returnToHome, setReturnToHome] = useState(false);
-    const [isMusicPlaying, setIsMusicPlaying] = useState(true);
-    const audioRef = useRef(null);
-
-
-     /*
+    /*
     The game contains 3 levels from easy to hard.
     The data of each map contains six variables:
         0: This field is the goal.
         1: This field leads to the goal.
         2-5: These fields lead to a dead end.
     */
+    const maps = [
 
-        const maps = [
-
-            { id: 1, name: 'Level 1', data: [
-              [5, 2, 2, 2, 2, 2],
-              [2, 4, 2, 0, 1, 2],
-              [3, 2, 0, 0, 2, 5],
-              [2, 5, 0, 3, 2, 3],
-              [2, 2, 2, 2, 3, 4],
-            ]},
-            { id: 2, name: 'Level 2', data: [
-                [5, 2, 2, 0, 0, 1],
-                [2, 4, 2, 0, 2, 2],
-                [3, 2, 0, 0, 2, 5],
-                [2, 5, 0, 3, 2, 3],
-                [0, 0, 0, 2, 3, 4],
-            ]},
-            { id: 3, name: 'Level 3', data: [
-                [1, 0, 0, 3, 3, 5],
-                [2, 4, 0, 0, 0, 0],
-                [3, 2, 3, 3, 2, 0],
-                [0, 0, 0, 0, 2, 0],
-                [0, 2, 3, 0, 0, 0],
-            ]},
-          ];
+        { id: 1, name: 'Level 1', data: [
+            [5, 2, 2, 2, 2, 2],
+            [2, 4, 2, 0, 1, 2],
+            [3, 2, 0, 0, 2, 5],
+            [2, 5, 0, 3, 2, 3],
+            [2, 2, 2, 2, 3, 4],
+        ]},
+        { id: 2, name: 'Level 2', data: [
+            [5, 2, 2, 0, 0, 1],
+            [2, 4, 2, 0, 2, 2],
+            [3, 2, 0, 0, 2, 5],
+            [2, 5, 0, 3, 2, 3],
+            [0, 0, 0, 2, 3, 4],
+        ]},
+        { id: 3, name: 'Level 3', data: [
+            [1, 0, 0, 3, 3, 5],
+            [2, 4, 0, 0, 0, 0],
+            [3, 2, 3, 3, 2, 0],
+            [0, 0, 0, 0, 2, 0],
+            [0, 2, 3, 0, 0, 0],
+        ]},
+    ];
 
     /*
     Each map has its own start coordinates.
-    The BeeBot is placed at the
+    The Bee-Bot is placed at the
     start of the game at the starting
     coordinates of the respective map
     */
-
     const startCoords = [
         { x: 3, y: 2, o: "n"},
         { x: 4, y: 0, o: "e"},
         { x: 4, y: 0, o: "n" },
     ];
 
+    const navigate = useNavigate();
 
-    /*
-    Get map by Level Id
-    */
+    // List of steps from the instructions 
+    const [steps, setSteps] = useState([]);
 
-    const { levelId } = useParams();
-    const getMapById = (levelId) => {
-        return maps.find((map) => map.id === parseInt(levelId));
-    };
-    const map = getMapById(levelId);
-
-    /*
-    Get start Coords by Level Id
-    */
-    const getStartCoordsById = (levelId) => {
-        return startCoords[levelId-1];
-    };
-    const startCoord = getStartCoordsById(levelId);
-
-    const [beebot, setBeebot] = useState(startCoord);
-
-
-    // Booleans for rendering HTML elements
-    const isLevelOne = checkLevel(levelId);
-    const isCompleted = checkCompletedInteraction();
-    const [showTutorialPrompt, setShowTutorialPrompt] = useState(true);
+    // Toggler for the list of steps
     const [toggled, setToggled] = useState(false);
 
-    useEffect(() => {
-    if (isCompleted || gameOver) {
-        if (index === 7) {
-            setBeebot({ x: 2, y: 2, o: 'n' });
-        } else {
-            setBeebot(startCoord);
-        }
-        setSteps([]);
-    }
-    }, [isCompleted, gameOver, index]);
+    // State of game
+    const [gameOver, setGameOver] = useState(false);
+    const [finishedLevel, setFinishedLevel] = useState(false);
+    const [finishedGame, setFinishedGame] = useState(false);
+    const [returnToHome, setReturnToHome] = useState(false);
 
-    useEffect(() => {
-    if (finishedLevel) {
-        let newLevelId = parseInt(levelId)+ 1;
-        navigate(`/game/${newLevelId}`, { replace: true });
-        // reset steps array
-        setSteps([]);
-        
-        let newStartCoord = getStartCoordsById(newLevelId)
-        setBeebot(newStartCoord);
-    }
-    }, [finishedLevel]);
+    // Current level id
+    const { levelId } = useParams();
 
-    useEffect(() => {
-    if (returnToHome) {
-        navigate(`/home`, { replace: true });
-    }
-    }, [returnToHome]);
+    // Current map
+    const getMapById = (levelId) => {return maps.find((map) => map.id === parseInt(levelId));};
+    const map = getMapById(levelId);
 
-    useEffect(() => {
-        if (index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1) {
-            increaseIndex();
-        }
-        if (index === 7 && beebot.x === 2 && beebot.y === 3 && steps.length === 2) {
-            increaseIndex();
-        }
-    }, [beebot, index,steps]);
+    // Current start coordination
+    const getStartCoordsById = (levelId) => {return startCoords[levelId-1];};
+    const startCoord = getStartCoordsById(levelId);
 
-    useEffect(() => {
-        if (audioRef.current && isMusicPlaying) {
-            audioRef.current
-                .play()
-                .catch((error) => {
-                    console.error("Autoplay-Fehler:", error);
-                });
+    // Bee-Bot with start coordination 
+    const [beebot, setBeebot] = useState(startCoord);
+
+    // Tutorial
+    const beebotInteraction = jsonData.phrases;
+    const [index, setIndex] = useState(0);
+    // Continues tutorial after completing the instruction
+    const increaseIndex = () => {
+        if (index === 3 && beebot.x === 2 && beebot.y === 2) {
+            setIndex(index + 1); 
+        } else if (index === 7 && beebot.x === 2 && beebot.y === 3) {
+            setIndex(index + 1);
+        } else if (index !== 3 && index !== 7) {
+            setIndex(index + 1);
         }
-    }, []);
-    
-      
-      
-      
-      const toggleMusic = () => {
+    }; 
+
+    // Boolean variables for conditional rendering of interaction 
+    const isLevelOne = (levelId) => {return parseInt(levelId) === 1;};
+    const isCompleted = beebotInteraction[index] === undefined;
+    const [showTutorialPrompt, setShowTutorialPrompt] = useState(true);
+
+    // Background music
+    const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+    const audioRef = useRef(null);
+    const toggleMusic = () => {
         if (audioRef.current) {
           if (isMusicPlaying) {
             audioRef.current.pause();
@@ -172,10 +121,63 @@ function Game() {
           setIsMusicPlaying(!isMusicPlaying);
         }
       };
-      
+
+    // After finishing the current level, the next level is loaded
+    useEffect(() => {
+        if (finishedLevel) {
+            let newLevelId = parseInt(levelId)+ 1;
+            navigate(`/game/${newLevelId}`, { replace: true });
+            setSteps([]);
+            
+            let newStartCoord = getStartCoordsById(newLevelId)
+            setBeebot(newStartCoord);
+        }
+    }, [finishedLevel, getStartCoordsById, levelId, navigate]);
+
+    // After pressing the return button at the end of the game,
+    // you will be redirected to the home page
+    useEffect(() => {
+        if (returnToHome) {
+            navigate(`/home`, { replace: true });
+        }
+    }, [navigate, returnToHome]);
+
+    // Audio playback control
+    useEffect(() => {
+        if (audioRef.current && isMusicPlaying) {
+            audioRef.current
+                .play()
+                .catch((error) => {
+                    console.error("Autoplay-Fehler:", error);
+                });
+        }
+    }, [isMusicPlaying]);
+
+    // Return Bee-Bot to previous position after hitting a barrier
+    useEffect(() => {
+        if (isCompleted || gameOver) {
+            if (index === 7) {
+                setBeebot({ x: 2, y: 2, o: 'n' });
+            } else {
+                setBeebot(startCoord);
+            }
+            setSteps([]);
+        }
+    }, [isCompleted, gameOver, index, startCoord]);
+    
+    // Tutorial continues when the Bee-Bot is on the right field
+    useEffect(() => {
+        if (index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1) {
+            increaseIndex();
+        }
+        if (index === 7 && beebot.x === 2 && beebot.y === 3 && steps.length === 2) {
+            increaseIndex();
+        }
+    }, [beebot, index, steps]);
     
 
-
+    // Functions for the instruction buttons
+    // Save instruction for execution and presentation in the step list
     function handleLeftButtons() {
         setSteps([
             ...steps,
@@ -197,14 +199,17 @@ function Game() {
           ]);
     }
 
+    // Go function for the execution of the instructions from the step list
     async function handleGoButton() {
 
         const timer = ms => new Promise(res => setTimeout(res, ms))
         let coords = { ...beebot }
+
         for (let i = 0; i < steps.length; i++){
 
             let s = steps[i].name;
 
+            // Updates the board with the given coordinates and orientation
             if(s === "left"){
                 if(coords.o === "n"){
                     updateBoard(coords.x, coords.y, "w");
@@ -250,35 +255,21 @@ function Game() {
                     coords = { ...coords, y: coords.y - 1 }; 
                 }
             }
+        // 1000 miliseconds time gap between the steps
         await timer(1000);
         }    
-        // Delets steps during the interaction
+        // During the tutorial the step array is always deleted
         if(!isCompleted){
             setSteps([]);
         }  
     }
 
-    function reset(){
-        setBeebot(startCoord);
-        setSteps([]);
-    }
-
-
-    /**
-     * 
-     * @param {*} x x-coordinate
-     * @param {*} y y-ccordinate
-     * @param {*} o orientation
-     * 
-     * Function returns the updated map after each change 
-     * from the .. TODO
-     */
-
+    // Updates the map with the new position of the Bee-Bot and
+    // checks whether the Bee-Bot has encountered the target or obstacle
     function updateBoard(x, y, o) {
 
         let currState = getCurrState(x,y);
-        setDirection(o);
-
+        
         if(currState === 0){
             setBeebot({ x: x, y: y, o: o });
         }else if(currState === 1){
@@ -294,7 +285,7 @@ function Game() {
         }
     }
 
-
+    // Returns state of current position on the map
     function getCurrState(x,y) {
         const currMap = map.data;      
         for (let i = 0; i < currMap.length; i++) {
@@ -306,28 +297,19 @@ function Game() {
         } 
     }
 
-    const increaseIndex = () => {
-        if (index === 3 && beebot.x === 2 && beebot.y === 2) {
-            setIndex(index + 1); // Weiter nur, wenn Zielbedingungen für index 3 erfüllt sind
-        } else if (index === 7 && beebot.x === 2 && beebot.y === 3) {
-            setIndex(index + 1); // Weiter nur, wenn Zielbedingungen für index 7 erfüllt sind
-        } else if (index !== 3 && index !== 7) {
-            setIndex(index + 1); // Normales Verhalten für andere Indizes
-        }
-    }; 
-
-    function checkLevel(levelId) {
-        return parseInt(levelId) === 1;
+    // Set the Bee-Bot to the start position and
+    // deletes the content of the array
+    function reset(){
+        setBeebot(startCoord);
+        setSteps([]);
     }
 
-    function checkCompletedInteraction() {
-        return beebotInteraction[index] === undefined;
-    }
-
+    // Renders the tutorial interaction if it's needed
     function renderInteraction() {
-        const isBeeBotAtPosition3 = index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1;
-        const isBeeBotAtPosition7 = index === 7 && beebot.x === 3 && beebot.y === 2 && steps.length === 2;
+        const isBeeBotAtIndex3 = index === 3 && beebot.x === 2 && beebot.y === 2 && steps.length === 1;
+        const isBeeBotAtIndex7 = index === 7 && beebot.x === 3 && beebot.y === 2 && steps.length === 2;
     
+        // Ends the tutorial
         const handleTutorialChoice = (needsTutorial) => {
             setShowTutorialPrompt(false); 
             if (!needsTutorial) {
@@ -335,6 +317,7 @@ function Game() {
             }
         };
     
+        // Asking the user if a tutorial is needed
         if (showTutorialPrompt) {
             return (
                 <div className="message-assistant-content" style={{ textAlign: 'center' }}>
@@ -357,7 +340,8 @@ function Game() {
                 </div>
             );
         }
-    
+
+        // Renders the tutorial interaction
         return !isCompleted ? (
             <p className="message-assistant-content" style={{ textAlign: 'center' }}>
                 {beebotInteraction[index]}
@@ -365,7 +349,7 @@ function Game() {
                 <button
                     className="button-next"
                     onClick={increaseIndex}
-                    disabled={(index === 3 && !isBeeBotAtPosition3) || (index === 7 && !isBeeBotAtPosition7)}
+                    disabled={(index === 3 && !isBeeBotAtIndex3) || (index === 7 && !isBeeBotAtIndex7)}
                 >
                     Weiter
                 </button>
@@ -375,7 +359,7 @@ function Game() {
         );
     }
     
-
+    // Displaying the used instructions
     function renderSteps() {
         if (!toggled && steps.length > 0) {
             const groupedSteps = groupSteps(steps);
@@ -392,7 +376,7 @@ function Game() {
         return null;
     }
     
-
+    // Groups the same steps that were selected one after the other
     function groupSteps(steps) {
         if (!steps.length) return [];
     
@@ -410,11 +394,16 @@ function Game() {
             }
         }
     
-        grouped.push({ ...currentStep, count }); // Letztes Element hinzufügen
+        grouped.push({ ...currentStep, count });
         return grouped;
     }
     
 
+    /*
+    Renders the buttons depending on two situations:
+        1. During the tutorial they become interavtive 
+        2. Outside the tutorial they rendered normally
+    */ 
     function renderButtons() {
         if (isLevelOne && !isCompleted) {
             return (
@@ -458,18 +447,19 @@ function Game() {
           );
     }
  
+    //
     return (
         <div className="game-background">
             <audio ref={audioRef} src={gameMusic} loop/>
             <main>
                 <Container fluid>
                 <Row>
-                    {/* BeeBot which helps you during the game */}
+                    {/* Bee-Bot which helps you during the game and settings for the game */}
                     <Col lg={3} md={4} sm={4}>
                         <Row>
                             <div style={{ display: 'flex' }}>
                                 <p>
-                                    {/* toogler for music */}
+                                    {/* Toogler for the music */}
                                     <button className='setting-button' onClick={toggleMusic} loop>
                                         {isMusicPlaying ? "Musik pausieren" : "Musik abspielen"}
                                     </button>
@@ -477,7 +467,7 @@ function Game() {
                             </div>
                             <div style={{ display: 'flex' }}>
                                 <p> 
-                                    {/* toogler for steps */}
+                                    {/* Toogler for the steps */}
                                     <button className="setting-button" onClick={() => setToggled(!toggled)} style={{marginTop: '-10px'}}>
                                         {toggled ? "Schritte anzeigen" : "Schritte verbergen"}
                                     </button>
@@ -485,11 +475,10 @@ function Game() {
                             </div>
                         </Row>
                         <Row>
-                           
+                            {/* Message field for the tutorial OR instructions */}
                             <div className='message-assistant'>
                                 {isLevelOne ? <div> { renderInteraction() } </div> : <div> { renderSteps() } </div> }
-                            </div>
-                           
+                            </div> 
                         </Row>
                         <Row>
                             <div className='beebot'>
@@ -509,25 +498,29 @@ function Game() {
                     </Col>
                 </Row>
                 </Container>
-            
             </main>
+
             {/* Triggers message which says the current state of the game */}
+            {/* Hitting an obstacle */}
             <Message color= {'#e24f3e'} trigger={gameOver} setTrigger= {setGameOver} onClose={() => setReturnToHome(true)}>
                 <h1 style={{ color: 'white', fontSize:'45px' }}>Probiere es noch einmal!</h1>
             </Message>
+
+            {/* Finishing the current level */}
             <Message color= {'orange'} trigger={finishedLevel} setTrigger= {setFinishedLevel}>
                 <h1 style={{ color: 'white', fontSize:'45px' }}> Gut gemacht!</h1>
                 <p>
                 BeeBot hat erfolgreich das Ziel erreicht.
                 </p>
             </Message>
+
+            {/* Finishing the last level of the game */}
             <Message color= {'green'} trigger={finishedGame} setTrigger= {setFinishedGame} gameStatus= {finishedGame}>
                 <h1 style={{ color: 'white', fontSize:'45px' }}>Juhuu wir haben es geschafft!!</h1>
                 <p>
                 Danke für deine Hilfe! Jetzt bin ich satt!
                 </p>
             </Message>
-            
         </div>
     );
 }

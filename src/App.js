@@ -5,6 +5,13 @@ import { Home } from './home';
 import { useEffect } from 'react';
 import './App.css';
 
+/*
+    @Title: BeeBots Adventure
+    @Name: Daniela Milisic
+    @Date: xx.xx.xxxx
+    
+*/
+
 
 function App() {
 
