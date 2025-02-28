@@ -18,11 +18,14 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ## Game play
-1. **Plan Your Moves** – The player sees a grid with BeeBot and a target (such as a flower or honey). They must figure out how to get BeeBot to the target using a sequence of commands.
-2. **Enter Commands** – Players choose from basic movement commands:
+1. **Plan Your Moves** – The Bee-Bot has got lost in the park and is hungry. Take him to the picnic basket and make sure he gets there safely!
+2. **Enter Commands** – Choose from basic movement commands:
    - Forward (Move one step forward)
    - Turn Left (Rotate 90° left)
    - Turn Right (Rotate 90° right)
 
-3. **Execute & Debug** – After setting up the command sequence, the player presses "Run" to see BeeBot move. If BeeBot doesn't reach the goal correctly, they can adjust their commands and try again.
-4. **Win & Progress** – When BeeBot reaches the goal, the player advances to the next level, which may introduce new challenges like obstacles or multiple waypoints.
+3. **Execute & Debug** – After setting up the command sequence, you press "Go" to see the Bee-Bot move. If BeeBot doesn't reach the goal correctly, you can adjust your commands and try again.
+4. **Win & Progress** – When BeeBot reaches the goal, the you advance to the next level, which may introduce new challenges.
+
+![Screenshot 2025-02-16 135726](https://github.com/user-attachments/assets/b6cd3d99-764a-4fbf-84e9-c068e6922d56)
+
